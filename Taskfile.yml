@@ -1,3 +1,20 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
 version: 3
 
 vars:
@@ -20,6 +37,9 @@ vars:
   CONTROLLER_SRC: "docker.io/apache/openserverless-wsk-invoker:{{.OPENSERVERLESS_TAG}}"
   INVOKER_SRC: "docker.io/apache/openserverless-wsk-controller:{{.OPENSERVERLESS_TAG}}"
 
+  OPS_BRANCH: "{{.OPERATOR_TAG}}"
+
+  CMD: "check"
 
 tasks:
 
@@ -54,6 +74,7 @@ tasks:
       status:
       - ! test -e ../ops
 
+
     operator:
       desc: build the operator
       deps:
@@ -80,7 +101,6 @@ tasks:
       - task: image-save
         vars:
           SRC: "{{.STREAMER_SRC}}"
-
 
     admin-api:
       desc: build the admin-api
@@ -133,7 +153,6 @@ tasks:
       vars:
         IMAGES:
           sh: jq -r '.runtimes[][] | select(.default == true) | "\(.image.prefix)/\(.image.name):\(.image.tag)"'   runtimes.json | grep -v php
-
       cmds:
       - for: { var: IMAGES, split: "\n", as: IMG }
         task: image-save
@@ -157,22 +176,48 @@ tasks:
         '
       - diff opsroot.orig opsroot.json || true
 
+    opslink:
+      desc: link ops
+      cmds:
+      - task: cli
+      - mkdir -p ~/.local/bin ~/.ops/{{.OPS_BRANCH}}
+      - ln -sf $(pwd)/ops ~/.local/bin/ops
+      - ln -sf $(pwd)/olaris ~/.ops/{{.OPS_BRANCH}}/olaris
+
     build:
       desc: build all
       cmds:
-      - task: cli
+      - task: opslink
+      - task: openserverless
       - task: operator
       - task: runtimes
       - task: streamer
       - task: admin-api
       - task: opsroot
-      - task: runtimes
-      - task: openserverless
 
-    setup:
-      desc: setup
+    test:
+      desc: create
+      dir: testing/tests
       cmds:
         - |
-          export PATH="$PWD:$PATH"
-          ops setup mini
+          export PATH="{{.TASKFILE_DIR}}:$PATH"
+          export OPS_ROOT="{{.TASKFILE_DIR}}/olaris"
+          export OPS_BRANCH="{{.OPS_BRANCH}}"
+          which ops
+          ops -info
+          ./all.sh kind
 
+    license:
+      silent: true
+      desc: check license headers
+      cmds:
+      - |
+        license-eye header {{.CMD}} 
+        for i in */.licenserc.yaml
+        do  
+            DIR=$(dirname $i)
+            echo "*** Checking license headers in $DIR"
+            cd $DIR 
+            license-eye header {{.CMD}} 
+            cd {{.TASKFILE_DIR}}        
+        done 
