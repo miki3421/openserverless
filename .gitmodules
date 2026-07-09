@@ -25,7 +25,7 @@
 	branch = main
 [submodule "testing"]
 	path = testing
-	url = https://github.com/apache/openserverless-testing
+	url = https://github.com/miki3421/openserverless-testing
 	branch = main
 [submodule "task"]
 	path = olaris
