@@ -17,8 +17,8 @@
 
 [submodule "cli"]
 	path = cli
-	url = https://github.com/miki3421/openserverless-cli
-	branch = poc/keycloak-sso-cli
+	url = https://github.com/apache/openserverless-cli
+	branch = main
 [submodule "operator"]
 	path = olaris-op
 	url = https://github.com/apache/openserverless-operator
@@ -26,11 +26,11 @@
 [submodule "testing"]
 	path = testing
 	url = https://github.com/miki3421/openserverless-testing
-	branch = main
+	branch = fix/sso-test-failure-handling
 [submodule "task"]
 	path = olaris
 	url = https://github.com/miki3421/openserverless-task
-	branch = poc/sso-keycloak-local
+	branch = fix/system-api-readiness-probe
 [submodule "runtimes"]
 	path = runtimes
 	url = https://github.com/apache/openserverless-runtimes
@@ -46,7 +46,7 @@
 [submodule "admin-api"]
 	path = admin-api
 	url = https://github.com/miki3421/openserverless-admin-api
-	branch = poc/keycloak-oidc-bridge
+	branch = fix/system-api-readiness-probe
 [submodule "build"]
 	path = build
 	url = https://github.com/apache/openserverless-build
