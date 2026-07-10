@@ -25,12 +25,12 @@
 	branch = main
 [submodule "testing"]
 	path = testing
-	url = https://github.com/miki3421/openserverless-testing
-	branch = fix/sso-test-failure-handling
+	url = https://github.com/apache/openserverless-testing
+	branch = main
 [submodule "task"]
 	path = olaris
-	url = https://github.com/miki3421/openserverless-task
-	branch = fix/system-api-readiness-probe
+	url = https://github.com/apache/openserverless-task
+	branch = main
 [submodule "runtimes"]
 	path = runtimes
 	url = https://github.com/apache/openserverless-runtimes
@@ -46,7 +46,7 @@
 [submodule "admin-api"]
 	path = admin-api
 	url = https://github.com/miki3421/openserverless-admin-api
-	branch = fix/system-api-readiness-probe
+	branch = ci/pin-docker-actions
 [submodule "build"]
 	path = build
 	url = https://github.com/apache/openserverless-build
