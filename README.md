@@ -17,7 +17,18 @@
   ~ under the License.
 -->
 
-# Apache OpenServerless (incubating)
+# OPS Advanced
+
+Personal development distribution maintained by **miki3421**, based on Apache
+OpenServerless 0.9.0. This branch is not an Apache release.
+
+See [the Advanced plan and current status](ADVANCED.md) for the isolated forks,
+development setup and the first milestone: integrated PostgreSQL 18.
+
+The documentation below is retained from upstream; its release and installation
+instructions describe Apache OpenServerless, not an Advanced release.
+
+## Apache OpenServerless (incubating) upstream documentation
 
 Welcome to [Apache OpenServerless](https://openserverless.apache.org), an incubating project at the [Apache Software Foundation](https://www.apache.org).
 

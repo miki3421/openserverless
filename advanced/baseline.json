@@ -1,0 +1,38 @@
+{
+  "admin-api": {
+    "repository": "https://github.com/miki3421/openserverless-admin-api",
+    "upstream_0_9_0_commit": "128d00dcbc298aa7307e8f5b0b72e1a24e544e11"
+  },
+  "build": {
+    "repository": "https://github.com/miki3421/openserverless-build",
+    "upstream_0_9_0_commit": "141a0602a7f997edded17e68f16b04ce5efe7970"
+  },
+  "cli": {
+    "repository": "https://github.com/miki3421/openserverless-cli",
+    "upstream_0_9_0_commit": "74d702cf0674f3cb982a3d3848512cef36100d1b"
+  },
+  "devcontainer": {
+    "repository": "https://github.com/miki3421/openserverless-devcontainer",
+    "upstream_0_9_0_commit": "6188b034d54492f971b0db8faf89dc65d4f90e27"
+  },
+  "oplugins": {
+    "repository": "https://github.com/miki3421/openserverless-task-new",
+    "upstream_0_9_0_commit": "fdc865ba71d32750f9612ce72614fb5c50a4e548"
+  },
+  "oplugins-op": {
+    "repository": "https://github.com/miki3421/openserverless-operator",
+    "upstream_0_9_0_commit": "5095b2fbce52bde633bb57385bf0bb25faf4d1ee"
+  },
+  "runtimes": {
+    "repository": "https://github.com/miki3421/openserverless-runtimes",
+    "upstream_0_9_0_commit": "6505be728d6991f0ae66fbe8ff4e574102736902"
+  },
+  "streamer": {
+    "repository": "https://github.com/miki3421/openserverless-streamer",
+    "upstream_0_9_0_commit": "7e1762123187a75a5cc76d5fbc2f006e462bea80"
+  },
+  "testing": {
+    "repository": "https://github.com/miki3421/openserverless-testing",
+    "upstream_0_9_0_commit": "1b96437ccc68913d52eb7f3769997ea2121ce5fc"
+  }
+}
