@@ -40,13 +40,13 @@ export OPS_BRANCH=advanced
 export OPS_ROOT="/absolute/path/to/ops-advanced/oplugins"
 ```
 
-This isolates CLI configuration. It does not isolate Kubernetes: explicitly select the Advanced test cluster before running any deployment command. No Advanced CLI binary or container images have been published yet; the inherited component images still refer to upstream builds.
+This isolates CLI configuration. It does not isolate Kubernetes: explicitly select the Advanced test cluster before running any deployment command. No Advanced CLI binary or container images have been published yet. The operator and PostgreSQL backup now reference personal development images that must be built and loaded into the test cluster; other components still use upstream images. See `oplugins-op/POSTGRES_ADVANCED.md`.
 
 ## First milestone: integrated PostgreSQL 18
 
 Target PostgreSQL 18 with pgvector inside Kubernetes. Do not change the image tag of an existing PostgreSQL 16 data directory to migrate it.
 
-Current baseline uses pgvector/pgvector:pg16 and Kubegres 1.18. The inspected K3s installation runs PostgreSQL 16.15 and has pgvector 0.8.6 available. As of 2026-09-17, the selected stable PostgreSQL target is 18.6, pgvector is 0.8.6, and Kubegres has a v1.19 tag. These are research targets, not a tested or deployed combination.
+The recorded upstream baseline uses pgvector/pgvector:pg16 and Kubegres 1.18. Advanced now selects a digest-pinned PostgreSQL 18.6/pgvector 0.8.6 image for new installations, retaining Kubegres 1.18 after isolated validation. The inspected K3s installation runs PostgreSQL 16.15 and has pgvector 0.8.6 available. As of 2026-09-17, the selected stable PostgreSQL target is 18.6, pgvector is 0.8.6, and Kubegres has a v1.19 tag. Kubegres 1.19 remains a research target; it was not included in this increment.
 
 Before enabling PostgreSQL 18:
 
@@ -57,7 +57,7 @@ Before enabling PostgreSQL 18:
 5. Implement and rehearse explicit PostgreSQL 16 to 18 migration using dump/restore or pg_upgrade. Keep the source volumes and verify rollback before any cutover. Test backup restoration and data integrity.
 6. Benchmark the same dataset and workload on 16 and 18 with equal resources, recording throughput, p95 latency, CPU, memory and storage I/O.
 
-Status: repository foundation established; PostgreSQL 18 implementation and migration are not yet validated. The existing K3s installation and retained VM have not been changed by this initialization.
+Status: the PostgreSQL 18 development profile, local operator/backup builds, replication, manual promotion, user provisioning and backup/restore passed in a new isolated Kind cluster inside the retained VM. Eight unit tests pass. PostgreSQL 16-to-18 migration, full OPS application regression tests, ARM64 execution and performance benchmarks remain pending. The host K3s database and original Kind cluster remain unchanged. The VM runtime inotify limit was raised from 128 to 1024 to support the additional cluster. See `oplugins-op/POSTGRES_ADVANCED.md` for build instructions and exact validation limits.
 
 The Helm work in Apache task PR #235 remains a separate change and is not implicitly included in this baseline.
 

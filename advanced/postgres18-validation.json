@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-17",
+  "cluster": "kind-ops-advanced-pg18",
+  "kubernetes": "v1.33.1",
+  "architecture": "amd64",
+  "postgresql": "18.6",
+  "pgvector": "0.8.6",
+  "kubegres": "1.18",
+  "unit_tests_passed": 8,
+  "checks_passed": [
+    "fresh_primary_and_replica",
+    "operator_create_reconcile",
+    "operator_user_provisioning",
+    "pg8000_non_superuser_login",
+    "jsonb",
+    "vector_hnsw_and_distance",
+    "streaming_replication",
+    "manual_replica_promotion",
+    "single_database_restore",
+    "full_cluster_logical_restore",
+    "role_privileges_restored",
+    "legacy_pg16_preflight_refusal",
+    "failed_dump_cleanup",
+    "backup_permissions_0600"
+  ],
+  "pending": [
+    "postgresql_16_to_18_migration",
+    "full_ops_application_suite",
+    "ferretdb_compatibility",
+    "node_failure_automatic_failover",
+    "performance_benchmarks",
+    "arm64_runtime",
+    "container_registry_publication"
+  ],
+  "image_profile": "../oplugins-op/openserverless/files/postgres-profile.json"
+}
