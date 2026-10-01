@@ -30,6 +30,7 @@ header:
     - 'streamer'
     - 'testing'
     - 'build'
+    - '.github'
     - 'LICENSE'
     - 'DISCLAIMER'
     - 'NOTICE'
@@ -37,3 +38,4 @@ header:
     - 'openserverless.code-workspace'
     - 'no-release.txt'
     - '**/*.json'
+    - 'apache-rat-0.18.jar'

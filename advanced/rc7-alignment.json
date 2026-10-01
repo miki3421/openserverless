@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-01",
+  "upstream_tag": "v0.9.0-incubating-RC7",
+  "upstream_commit": "84a3a8a3b19f5b549e52ddb025c154d1de958403",
+  "submodules": {
+    "admin-api": {
+      "rc7": "128d00dcbc298aa7307e8f5b0b72e1a24e544e11",
+      "advanced": "28960ef40fddd4fe762200a254eadd0aa07e1aa4"
+    },
+    "build": {
+      "rc7": "141a0602a7f997edded17e68f16b04ce5efe7970",
+      "advanced": "5b49c060ad42e02e170bc43edc14cb5d33aaaf3e"
+    },
+    "cli": {
+      "rc7": "74d702cf0674f3cb982a3d3848512cef36100d1b",
+      "advanced": "9e5808307ec5d9bfbeefb00e1bcc379be4fd8e8a"
+    },
+    "devcontainer": {
+      "rc7": "c639db115dfddf5e660841eaf520beea541047d3",
+      "advanced": "9f4dc6a52d4d7147ab2f1bb9667ebc6c8a6541b0"
+    },
+    "oplugins": {
+      "rc7": "897696813c18bfe7bdf2c108f227de9044c9a291",
+      "advanced": "dd0de12a955b5b491c1085f688303fcaba746da0"
+    },
+    "oplugins-op": {
+      "rc7": "5d509e30b1fca7c5ad6e558ceecadb8ac909f89b",
+      "advanced": "f15a55c6d34f6d9f83353f4687da07fb3d0f8b50"
+    },
+    "runtimes": {
+      "rc7": "24b9b7be93427ecdc1a448a0455a61e47789ec14",
+      "advanced": "176d74bd524b14e8a57449728a9028449b2bf44e"
+    },
+    "streamer": {
+      "rc7": "2de92993ff4930715eec38ae80ed91b9ded15c21",
+      "advanced": "e1993c9532b15fd759fa4a5967ad9fd592128315"
+    },
+    "testing": {
+      "rc7": "1b96437ccc68913d52eb7f3769997ea2121ce5fc",
+      "advanced": "a6c9ef41d19700ee5613f46e2726aa80bc2fb55a"
+    }
+  }
+}

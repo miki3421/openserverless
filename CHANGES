@@ -44,3 +44,18 @@ This is the initial version of the CHANGES file for the project. It outlines the
 - cleaned all the .licenserc and added a top level rat- reworked all the LICENSE and NOTICE files
 - reworked the cli to use license headers
 - cleaned some leftover olaris -> oplugins
+
+# 0.9.0-RC6
+
+- cleaned LICENSES and NOTICE including embedded packages and deployment descriptors
+- certmanager is now downloaded on demand with helm
+- removed minio and all the utils, renamed as generic s3
+- removed mongodb support entirely (monngodb name retained meaning ferretdb)
+- fixed issues in the ops setup server deployment
+- added tika support
+
+# 0.9.0-RC7
+- moved oplugins/util/config to its own openserverless-configurator repo
+- do no not add OPS_BRANCH in ~/.profile any more
+- updated the LICENSE and NOTICE for oplugins and top level
+

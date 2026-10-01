@@ -68,3 +68,9 @@ The Helm work in Apache task PR #235 remains a separate change and is not implic
 - https://github.com/pgvector/pgvector
 - https://github.com/reactive-tech/kubegres/tree/v1.19
 - https://github.com/docker-library/docs/blob/master/postgres/README.md
+
+## RC7 alignment (2026-10-01)
+
+Merged upstream `v0.9.0-incubating-RC7` and its exact submodule commits into the personal Advanced branches. PostgreSQL 18 and the personal development image references are retained. Updated operator images must be rebuilt before Advanced deployment. Upstream workflows remain archived and inactive. See `advanced/rc7-alignment.json`.
+
+The previous validation VM has been removed outside this task; previous test results remain historical evidence, not validation of this merge. A new K3s-only VM is prepared for a pristine RC7 full installation before Advanced regression testing. OPS installation is intentionally deferred to the guided session.
