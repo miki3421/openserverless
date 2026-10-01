@@ -74,3 +74,25 @@ The Helm work in Apache task PR #235 remains a separate change and is not implic
 Merged upstream `v0.9.0-incubating-RC7` and its exact submodule commits into the personal Advanced branches. PostgreSQL 18 and the personal development image references are retained. Updated operator images must be rebuilt before Advanced deployment. Upstream workflows remain archived and inactive. See `advanced/rc7-alignment.json`.
 
 The previous validation VM has been removed outside this task; previous test results remain historical evidence, not validation of this merge. A new K3s-only VM is prepared for a pristine RC7 full installation before Advanced regression testing. OPS installation is intentionally deferred to the guided session.
+
+## Pending complete review: installation and automatic builds
+
+Added to the review scope on 2026-10-01. These checks are pending, not validated by the K3s laboratory results.
+
+Implementation sources to inspect and pin to exact branches/commits:
+- https://github.com/miki3421/openserverless-task-custom
+- https://github.com/miki3421/openserverless-admin-api
+
+Review `ops cloud k3s install`: version selection, installation options, containerd registry configuration, repeat execution, upgrade behavior and isolation from existing workloads.
+
+Review the automatic image build performed by `ops ide deploy` across the task and admin-api forks:
+- Trace the annotations written and consumed by both components, including missing values, defaults, precedence and backward compatibility.
+- Verify compatibility with the Docker + Kind production topology as a separate test matrix from native K3s + containerd. Production compatibility is a requirement, not authorization to mutate production.
+- Verify private registry endpoint resolution from the builder and runtime, authentication, TLS/trust configuration, push/pull permissions and credential handling without secret disclosure.
+- Verify generated image names, tags and destinations stay within the intended private registry. Assert no unintended push, overwrite, retagging or deletion of public images, and no regression in public-image pulls or deployments that do not need a build.
+- Exercise build failure, authentication failure, retries and repeated deployments; ensure failed builds do not replace a working deployment.
+- Record exact source commits, image digests, topology and evidence before marking any check passed.
+
+Repository boundary: do not push to any `olaris*` repository. Keep changes in authorized personal forks; no remote publication is implied by this review entry.
+
+Also track safe uninstall ordering: delete managed WhiskUser/Whisk resources while their operator is still running, wait for finalizer completion, then remove the operator and namespace. The RC7 laboratory required targeted removal of two orphaned Kopf finalizers after direct namespace deletion. Do not make blanket finalizer removal the normal uninstall behavior.
