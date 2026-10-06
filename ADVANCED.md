@@ -96,3 +96,57 @@ Review the automatic image build performed by `ops ide deploy` across the task a
 Repository boundary: do not push to any `olaris*` repository. Keep changes in authorized personal forks; no remote publication is implied by this review entry.
 
 Also track safe uninstall ordering: delete managed WhiskUser/Whisk resources while their operator is still running, wait for finalizer completion, then remove the operator and namespace. The RC7 laboratory required targeted removal of two orphaned Kopf finalizers after direct namespace deletion. Do not make blanket finalizer removal the normal uninstall behavior.
+
+## RC7 setup fixes on another K3s server (2026-10-06)
+
+Published personal branches:
+- Tasks: `miki3421/openserverless-task-custom:fix/setup-cluster-readiness` at `597006e9e2c3acf63a656e28c0afbd73f6fafea3` (based on OPS 0.9.0 snapshot task commit `7981be97`).
+- Operator: `miki3421/openserverless-operator:advanced` at `f6dffbb00d975cc480d9b7a16580671a5fa5d51e`.
+- No image is published. Build it on the target server with Docker, then import it into K3s containerd. This changes neither public image tags nor registries.
+
+### Prepare OPS task code
+
+Use an OPS 0.9.0 CLI installed on the target host. Set these values before running `ops -update`:
+
+```sh
+export OPS_REPO=https://github.com/miki3421/openserverless-task-custom
+export OPS_BRANCH=fix/setup-cluster-readiness
+ops -update
+ops -info
+```
+
+Confirm `OPS_TASKS` is `597006e9e2c3acf63a656e28c0afbd73f6fafea3`. This branch waits for the generated API ingress, skips service-pod lookups when SeaweedFS or Milvus is disabled, safely handles optional private registry credentials, makes component enable/disable dependency-aware, adds `ops config full`, and rejects incomplete frontend/notification prerequisites before deployment.
+
+### Build and load the operator image locally
+
+```sh
+git clone --branch advanced --recurse-submodules https://github.com/miki3421/openserverless.git ops-advanced-src
+cd ops-advanced-src
+docker build \
+  --build-arg OPERATOR_IMAGE_DEFAULT=docker.io/miki3421/ops-advanced-operator \
+  --build-arg OPERATOR_TAG_DEFAULT=rc7-full-fix-f6dffbb \
+  -t docker.io/miki3421/ops-advanced-operator:rc7-full-fix-f6dffbb \
+  ./oplugins-op
+docker save docker.io/miki3421/ops-advanced-operator:rc7-full-fix-f6dffbb | \
+  sudo k3s ctr images import -
+
+OPS_ROOT="${OPS_ROOT:-$HOME/.ops/0.9.0/oplugins}"
+jq '.config.images.operator = "docker.io/miki3421/ops-advanced-operator:rc7-full-fix-f6dffbb"' \
+  "$OPS_ROOT/opsroot.json" > "$OPS_ROOT/opsroot.json.tmp"
+mv "$OPS_ROOT/opsroot.json.tmp" "$OPS_ROOT/opsroot.json"
+```
+
+The clone contains the exact operator gitlink used for commit `f6dffbb`. `IfNotPresent` lets K3s use the locally imported image. The local catalogue override affects only this OPS installation; it does not push or retag any remote image.
+
+### Configure and run the full setup
+
+```sh
+ops config disable --all
+ops config full
+ops config status
+ops setup cluster
+```
+
+`config full` enables the complete service profile, including SeaweedFS, static frontend, PostgreSQL, Milvus, etcd, monitoring and registry. It leaves optional Slack/mail destinations, affinity and tolerations off. Run `ops config slack` or `ops config mail` first if you want those notification channels, then enable that channel explicitly. Check that SeaweedFS and static are true and notification flags are false before setup. The cluster must have enough RAM and storage for the full profile.
+
+After setup, inspect `kubectl get pods -A`; Alertmanager should be ready even with notifications off, etcd/Milvus should start, and the task should complete the frontend upload. These instructions use K3s containerd and a local Docker build; they do not cover Docker + Kind. No push to `olaris*` repositories was made.

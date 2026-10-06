@@ -41,7 +41,7 @@
 
 [submodule "task"]
 	path = oplugins
-	url = https://github.com/miki3421/openserverless-task-new.git
+	url = https://github.com/miki3421/openserverless-task-custom.git
 	branch = advanced
 
 [submodule "runtimes"]
