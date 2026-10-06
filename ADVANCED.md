@@ -25,6 +25,10 @@ Personal distribution under the miki3421 account, based on Apache OpenServerless
 
 The root repository and all nine submodules use personal forks and the `advanced` branch. Gitlinks pin exact commits; `.gitmodules` points only to miki3421 repositories. `advanced/baseline.json` records the upstream starting commits.
 
+### Publication rule
+
+All OPS Advanced changes belong to the personal `miki3421` repositories and branches. Do not push commits, branches, tags, releases, or other changes to Apache repositories, and do not open or update PRs targeting Apache, without the user's explicit authorization for that specific publication action. Approval to implement a change does not itself authorize publishing it. Read-only fetches and inspection of Apache repositories are allowed. Never push to repositories whose names start with `olaris`, and do not delete existing branches or remote refs without explicit authorization. This rule covers core OPS, CLI, tasks, operators, admin API, runtimes, and related repositories.
+
 Inherited GitHub Actions workflows are archived on this branch, outside `.github/workflows`, pending a dedicated review of image registries, release names and credentials. No automatic build/publication pipeline is enabled for Advanced. Existing 0.9.0 branches and Apache PRs are unchanged.
 
 ```sh
