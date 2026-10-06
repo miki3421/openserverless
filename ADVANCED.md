@@ -61,7 +61,19 @@ Before enabling PostgreSQL 18:
 5. Implement and rehearse explicit PostgreSQL 16 to 18 migration using dump/restore or pg_upgrade. Keep the source volumes and verify rollback before any cutover. Test backup restoration and data integrity.
 6. Benchmark the same dataset and workload on 16 and 18 with equal resources, recording throughput, p95 latency, CPU, memory and storage I/O.
 
-Status: the PostgreSQL 18 development profile, local operator/backup builds, replication, manual promotion, user provisioning and backup/restore passed in a new isolated Kind cluster inside the retained VM. Eight unit tests pass. PostgreSQL 16-to-18 migration, full OPS application regression tests, ARM64 execution and performance benchmarks remain pending. The host K3s database and original Kind cluster remain unchanged. The VM runtime inotify limit was raised from 128 to 1024 to support the additional cluster. See `oplugins-op/POSTGRES_ADVANCED.md` for build instructions and exact validation limits.
+Status: the PostgreSQL 18 development profile, local operator/backup builds, replication, manual promotion, user provisioning and backup/restore passed in an isolated Kind cluster inside the retained VM. Eight unit tests pass. A synthetic PostgreSQL 16-to-18 logical migration rehearsal also passed; see the report below. Full OPS application regression tests, migration of representative OPS data, ARM64 execution and performance benchmarks remain pending. The OPS RC7 K3s database and the original Kind cluster remain unchanged. The VM runtime inotify limit was raised from 128 to 1024 to support the additional cluster. See `oplugins-op/POSTGRES_ADVANCED.md` for build instructions and exact validation limits.
+
+## PostgreSQL 16-to-18 migration rehearsal (2026-10-06)
+
+The rehearsal ran in the K3s VM `ops-advanced-rc7` (K3s `v1.37.1+k3s1`) while the OPS RC7 installation remained active. The existing OPS PostgreSQL 16 StatefulSets, services and 50 GiB PVCs were left untouched. All migration resources and synthetic data live in the separate `ops-pg-migration-lab` namespace.
+
+The source image was the same `pgvector/pgvector:pg16` image used by the RC7 database: PostgreSQL `16.15`, pgvector `0.8.7`. The target used the pinned Advanced image `pgvector/pgvector:0.8.6-pg18-bookworm@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a`: PostgreSQL `18.6`, pgvector `0.8.6`, with `PGDATA=/var/lib/postgresql/pgdata` on a volume mounted at `/var/lib/postgresql`.
+
+The synthetic application database contained a role, JSONB rows, 1,000 vector rows and an HNSW index. Both the per-database `pg_dump`/`pg_restore` path and a full-cluster `pg_dumpall` restore passed when the target was initialized with a distinct bootstrap superuser. The restored database retained its application owner and SELECT grant; all 1,000 rows matched the source checksum (`d788fe94a3def182125b8e9b8c3996b9`); sample JSON values, vector nearest-neighbor results and HNSW index plans matched. This exercises pgvector data written by 0.8.7 and read by 0.8.6 for this test dataset; it does not establish general compatibility for every workload.
+
+A direct `pg_dumpall` restore into a target initialized with the default `postgres` superuser stopped because the dump also creates the source `postgres` role. The tested full-cluster path therefore uses a separate bootstrap administrator that is not part of the source dump. Migration instructions must explicitly cover bootstrap credentials, role ownership, ACLs and restore validation; a naive `pg_dumpall | psql` into a default-initialized cluster is not sufficient.
+
+This rehearsal used synthetic data only. It did not migrate or modify the OPS RC7 data, test a cutover or rollback under application traffic, measure downtime or large-database restore performance, or run the full OPS application regression suite. The isolated namespace is being retained for follow-up tests in the VM.
 
 The Helm work in Apache task PR #235 remains a separate change and is not implicitly included in this baseline.
 
