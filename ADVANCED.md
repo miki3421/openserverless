@@ -97,17 +97,19 @@ Repository boundary: do not push to any `olaris*` repository. Keep changes in au
 
 Also track safe uninstall ordering: delete managed WhiskUser/Whisk resources while their operator is still running, wait for finalizer completion, then remove the operator and namespace. The RC7 laboratory required targeted removal of two orphaned Kopf finalizers after direct namespace deletion. Do not make blanket finalizer removal the normal uninstall behavior.
 
-## RC7 setup fixes on another K3s server (2026-10-06)
+## Prova di OPS RC7 su un altro server K3s (2026-10-06)
 
-Published personal branches:
-- Tasks: `miki3421/openserverless-task-custom:fix/setup-cluster-readiness` at `597006e9e2c3acf63a656e28c0afbd73f6fafea3` (based on OPS 0.9.0 snapshot task commit `7981be97`).
-- RC7 operator: `miki3421/openserverless-operator:fix/alertmanager-no-destinations-rc7` at `acd8999` (`39f7499` code fix); based on exact RC7 operator commit `5d509e30` and adds only the Alertmanager fix. PostgreSQL remains at the RC7 default major version for this test.
-- The Advanced operator branch `advanced` also contains the fix at `f6dffbb`, alongside the PostgreSQL 18 work. Do not use it for the isolated RC7 setup check.
-- No image was published. The inherited operator image workflow started because its `branches-ignore: '*'` did not match a slash-containing branch; it was canceled while creating Kind, before build, registry login or push. The inherited workflows are now archived on this branch. Build locally on the target server and import into K3s containerd; no registry push is needed.
+I seguenti rami sono pubblicati sui fork personali:
 
-### Prepare OPS task code
+- Task: `miki3421/openserverless-task-custom:fix/setup-cluster-readiness`, commit `597006e9e2c3acf63a656e28c0afbd73f6fafea3`, basato sul commit dei task `7981be97` della snapshot OPS 0.9.0.
+- Operatore RC7: `miki3421/openserverless-operator:fix/alertmanager-no-destinations-rc7`, commit `acd8999` (fix al commit `39f7499`), basato sul commit operatore RC7 `5d509e30`. Include solo la correzione di Alert Manager e mantiene la versione PostgreSQL prevista da RC7.
+- Anche il ramo operatore `advanced` contiene la fix, insieme al lavoro su PostgreSQL 18. **Per questa prova isolata di RC7 usa il ramo qui sopra**, non `advanced`.
 
-Use an OPS 0.9.0 CLI installed on the target host. Set these values before running `ops -update`:
+L’immagine non è stata pubblicata su alcun registry. Il workflow ereditato per l’immagine è partito perché il filtro `branches-ignore: '*'` non escludeva un ramo il cui nome contiene `/`. L’ho annullato durante la creazione di Kind, prima della build, del login al registry e del push. Ho archiviato i workflow ereditati nel ramo di test. Costruisci l’immagine sul server di prova e importala nel containerd di K3s.
+
+### 1. Seleziona i task corretti
+
+Sul server deve essere installata la CLI OPS 0.9.0. Prima di aggiornarne i task:
 
 ```sh
 export OPS_REPO=https://github.com/miki3421/openserverless-task-custom
@@ -116,31 +118,49 @@ ops -update
 ops -info
 ```
 
-Confirm `OPS_TASKS` is `597006e9e2c3acf63a656e28c0afbd73f6fafea3`. This branch waits for the generated API ingress, skips service-pod lookups when SeaweedFS or Milvus is disabled, safely handles optional private registry credentials, makes component enable/disable dependency-aware, adds `ops config full`, and rejects incomplete frontend/notification prerequisites before deployment.
+Nell’output di `ops -info`, verifica che `OPS_TASKS` sia:
 
-### Build and load the operator image locally
+```text
+597006e9e2c3acf63a656e28c0afbd73f6fafea3
+```
+
+Questo ramo attende la creazione dell’Ingress API, evita di cercare i pod SeaweedFS o Milvus quando i relativi servizi sono disabilitati, gestisce le credenziali del registry privato come opzionali, applica le dipendenze tra componenti, aggiunge `ops config full` e interrompe il setup se mancano SeaweedFS o il frontend statico.
+
+### 2. Costruisci e importa localmente l’immagine dell’operatore RC7
+
+Assicurati che Docker e K3s siano installati sul server. Clona il ramo RC7 dell’operatore e costruisci l’immagine:
 
 ```sh
 git clone --branch fix/alertmanager-no-destinations-rc7 \
   https://github.com/miki3421/openserverless-operator.git ops-operator-rc7
 cd ops-operator-rc7
+
 docker build \
   --build-arg OPERATOR_IMAGE_DEFAULT=docker.io/miki3421/ops-advanced-operator \
   --build-arg OPERATOR_TAG_DEFAULT=rc7-full-fix-39f7499 \
   -t docker.io/miki3421/ops-advanced-operator:rc7-full-fix-39f7499 \
   .
+```
+
+Importala nel containerd usato da K3s:
+
+```sh
 docker save docker.io/miki3421/ops-advanced-operator:rc7-full-fix-39f7499 | \
   sudo k3s ctr images import -
+```
 
+Poi indica a OPS di usare il tag caricato localmente. Il comando aggiorna solo il catalogo task locale sotto `OPS_ROOT`:
+
+```sh
 OPS_ROOT="${OPS_ROOT:-$HOME/.ops/0.9.0/oplugins}"
 jq '.config.images.operator = "docker.io/miki3421/ops-advanced-operator:rc7-full-fix-39f7499"' \
   "$OPS_ROOT/opsroot.json" > "$OPS_ROOT/opsroot.json.tmp"
 mv "$OPS_ROOT/opsroot.json.tmp" "$OPS_ROOT/opsroot.json"
 ```
 
-The clone contains the exact operator source branch commit `39f7499`, containing the original RC7 operator code and Alertmanager fix only. `IfNotPresent` lets K3s use the locally imported image. The local catalogue override affects only this OPS installation; it does not push or retag any remote image.
+La policy `IfNotPresent` consente a K3s di usare l’immagine importata. Questa procedura non fa login né push verso Docker Hub, GHCR o altri registry e non cambia immagini pubbliche.
 
-### Configure and run the full setup
+### 3. Configura il profilo completo ed esegui il setup
 
 ```sh
 ops config disable --all
@@ -149,6 +169,6 @@ ops config status
 ops setup cluster
 ```
 
-`config full` enables the complete service profile, including SeaweedFS, static frontend, PostgreSQL, Milvus, etcd, monitoring and registry. It leaves optional Slack/mail destinations, affinity and tolerations off. Run `ops config slack` or `ops config mail` first if you want those notification channels, then enable that channel explicitly. Check that SeaweedFS and static are true and notification flags are false before setup. The cluster must have enough RAM and storage for the full profile.
+`ops config full` abilita il profilo completo, compresi SeaweedFS, frontend statico, PostgreSQL RC7, Milvus, etcd, monitoraggio e registry. Lascia disabilitate le notifiche Slack/mail, affinity e tolerations. Se vuoi le notifiche, configura prima `ops config slack` oppure `ops config mail`, poi abilita esplicitamente il canale scelto. Prima del setup verifica con `ops config status` che SeaweedFS e static siano `true` e che i canali non configurati siano disabilitati. Il cluster deve avere RAM e spazio disco sufficienti per il profilo completo.
 
-After setup, inspect `kubectl get pods -A`; Alertmanager should be ready even with notifications off, etcd/Milvus should start, and the task should complete the frontend upload. These instructions use K3s containerd and a local Docker build; they do not cover Docker + Kind. No push to `olaris*` repositories was made.
+A installazione terminata, controlla i pod con `kubectl get pods -A`: Alert Manager deve risultare pronto anche senza notifiche, etcd e Milvus devono avviarsi e il setup deve completare il caricamento del frontend. Questa procedura riguarda K3s con containerd e build Docker locale; non copre Docker + Kind. Non è stato fatto alcun push a repository `olaris*`.
