@@ -101,9 +101,9 @@ Also track safe uninstall ordering: delete managed WhiskUser/Whisk resources whi
 
 Published personal branches:
 - Tasks: `miki3421/openserverless-task-custom:fix/setup-cluster-readiness` at `597006e9e2c3acf63a656e28c0afbd73f6fafea3` (based on OPS 0.9.0 snapshot task commit `7981be97`).
-- RC7 operator: `miki3421/openserverless-operator:fix/alertmanager-no-destinations-rc7` at `39f7499`; based on exact RC7 operator commit `5d509e30` and adds only the Alertmanager fix. PostgreSQL remains at the RC7 default major version for this test.
+- RC7 operator: `miki3421/openserverless-operator:fix/alertmanager-no-destinations-rc7` at `acd8999` (`39f7499` code fix); based on exact RC7 operator commit `5d509e30` and adds only the Alertmanager fix. PostgreSQL remains at the RC7 default major version for this test.
 - The Advanced operator branch `advanced` also contains the fix at `f6dffbb`, alongside the PostgreSQL 18 work. Do not use it for the isolated RC7 setup check.
-- No image is published. Build it on the target server with Docker, then import it into K3s containerd. This changes neither public image tags nor registries.
+- No image was published. The inherited operator image workflow started because its `branches-ignore: '*'` did not match a slash-containing branch; it was canceled while creating Kind, before build, registry login or push. The inherited workflows are now archived on this branch. Build locally on the target server and import into K3s containerd; no registry push is needed.
 
 ### Prepare OPS task code
 
