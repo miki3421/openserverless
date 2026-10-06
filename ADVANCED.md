@@ -101,7 +101,8 @@ Also track safe uninstall ordering: delete managed WhiskUser/Whisk resources whi
 
 Published personal branches:
 - Tasks: `miki3421/openserverless-task-custom:fix/setup-cluster-readiness` at `597006e9e2c3acf63a656e28c0afbd73f6fafea3` (based on OPS 0.9.0 snapshot task commit `7981be97`).
-- Operator: `miki3421/openserverless-operator:advanced` at `f6dffbb00d975cc480d9b7a16580671a5fa5d51e`.
+- RC7 operator: `miki3421/openserverless-operator:fix/alertmanager-no-destinations-rc7` at `39f7499`; based on exact RC7 operator commit `5d509e30` and adds only the Alertmanager fix. PostgreSQL remains at the RC7 default major version for this test.
+- The Advanced operator branch `advanced` also contains the fix at `f6dffbb`, alongside the PostgreSQL 18 work. Do not use it for the isolated RC7 setup check.
 - No image is published. Build it on the target server with Docker, then import it into K3s containerd. This changes neither public image tags nor registries.
 
 ### Prepare OPS task code
@@ -120,23 +121,24 @@ Confirm `OPS_TASKS` is `597006e9e2c3acf63a656e28c0afbd73f6fafea3`. This branch w
 ### Build and load the operator image locally
 
 ```sh
-git clone --branch advanced --recurse-submodules https://github.com/miki3421/openserverless.git ops-advanced-src
-cd ops-advanced-src
+git clone --branch fix/alertmanager-no-destinations-rc7 \
+  https://github.com/miki3421/openserverless-operator.git ops-operator-rc7
+cd ops-operator-rc7
 docker build \
   --build-arg OPERATOR_IMAGE_DEFAULT=docker.io/miki3421/ops-advanced-operator \
-  --build-arg OPERATOR_TAG_DEFAULT=rc7-full-fix-f6dffbb \
-  -t docker.io/miki3421/ops-advanced-operator:rc7-full-fix-f6dffbb \
-  ./oplugins-op
-docker save docker.io/miki3421/ops-advanced-operator:rc7-full-fix-f6dffbb | \
+  --build-arg OPERATOR_TAG_DEFAULT=rc7-full-fix-39f7499 \
+  -t docker.io/miki3421/ops-advanced-operator:rc7-full-fix-39f7499 \
+  .
+docker save docker.io/miki3421/ops-advanced-operator:rc7-full-fix-39f7499 | \
   sudo k3s ctr images import -
 
 OPS_ROOT="${OPS_ROOT:-$HOME/.ops/0.9.0/oplugins}"
-jq '.config.images.operator = "docker.io/miki3421/ops-advanced-operator:rc7-full-fix-f6dffbb"' \
+jq '.config.images.operator = "docker.io/miki3421/ops-advanced-operator:rc7-full-fix-39f7499"' \
   "$OPS_ROOT/opsroot.json" > "$OPS_ROOT/opsroot.json.tmp"
 mv "$OPS_ROOT/opsroot.json.tmp" "$OPS_ROOT/opsroot.json"
 ```
 
-The clone contains the exact operator gitlink used for commit `f6dffbb`. `IfNotPresent` lets K3s use the locally imported image. The local catalogue override affects only this OPS installation; it does not push or retag any remote image.
+The clone contains the exact operator source branch commit `39f7499`, containing the original RC7 operator code and Alertmanager fix only. `IfNotPresent` lets K3s use the locally imported image. The local catalogue override affects only this OPS installation; it does not push or retag any remote image.
 
 ### Configure and run the full setup
 
