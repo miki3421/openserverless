@@ -75,6 +75,12 @@ A direct `pg_dumpall` restore into a target initialized with the default `postgr
 
 This rehearsal used synthetic data only. It did not migrate or modify the OPS RC7 data, test a cutover or rollback under application traffic, measure downtime or large-database restore performance, or run the full OPS application regression suite. The isolated namespace is being retained for follow-up tests in the VM.
 
+## Cluster-wide backup task (initial preflight)
+
+The task fork now has a read-only `ops backup cluster plan` command. It inventories persistent-volume sources and checks for a ready Velero deployment and an available backup location. It calls out local/hostPath volumes, which need a node-level data capture path, and separately flags that K3s datastore, server token and node configuration are not included in ordinary Kubernetes resource/volume backups. It does not install Velero, create a backup, or change the cluster.
+
+The cluster used for the PostgreSQL migration rehearsal stores volumes through K3s local-path backed by hostPath. A complete backup task must therefore combine application-consistent database backups, a tested node-level copy of local-path data, Kubernetes resources, and the K3s control-plane datastore/token procedure, with the backup copied off-cluster and a restore rehearsal. The destination is still to be selected; do not implement `create` or `restore` against a same-node path and call it disaster recovery. The initial preflight has three unit tests and valid Task YAML. Execution against a live cluster and full backup/restore remain pending.
+
 The Helm work in Apache task PR #235 remains a separate change and is not implicitly included in this baseline.
 
 ## References
