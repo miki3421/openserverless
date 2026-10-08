@@ -1,0 +1,18 @@
+{
+  "pg16": {
+    "tps": 837.829894,
+    "p95_ms": 8.21,
+    "cpu_seconds": 10.22682599999996,
+    "sampled_memory_peak_mib": 907.89453125,
+    "read_mib": 0.0,
+    "write_mib": 297.1171875
+  },
+  "pg18": {
+    "tps": 830.829563,
+    "p95_ms": 8.371,
+    "cpu_seconds": 9.772360000000049,
+    "sampled_memory_peak_mib": 895.2109375,
+    "read_mib": 0.3125,
+    "write_mib": 327.3515625
+  }
+}

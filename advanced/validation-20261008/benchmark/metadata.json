@@ -1,0 +1,52 @@
+{
+  "client_image": "docker.io/pgvector/pgvector:0.8.6-pg18-bookworm@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a",
+  "scale": 20,
+  "clients": 4,
+  "threads": 2,
+  "seconds": 40,
+  "warmup_seconds": 20,
+  "repeats": 3,
+  "order": [
+    "pg16",
+    "pg18",
+    "pg18",
+    "pg16",
+    "pg16",
+    "pg18"
+  ],
+  "caveat": "Shared VM with running OPS; warm-cache exploratory benchmark, not a production capacity result.",
+  "servers": {
+    "pg16": {
+      "image": "pgvector/pgvector:pg16",
+      "resources": {
+        "limits": {
+          "cpu": "1",
+          "memory": "1Gi"
+        },
+        "requests": {
+          "cpu": "100m",
+          "memory": "128Mi"
+        }
+      },
+      "settings": "data_checksums|off\neffective_io_concurrency|1\nfsync|on\nmax_connections|100\nserver_version|16.15 (Debian 16.15-1.pgdg12+2)\nshared_buffers|16384\nsynchronous_commit|on\n",
+      "dataset": "2000000|2000001000000|0",
+      "image_id": "docker.io/pgvector/pgvector@sha256:7b822b0aac60967beb1ea5e576b8602c94c300a157d187f385ae3e0da199b90a"
+    },
+    "pg18": {
+      "image": "docker.io/pgvector/pgvector:0.8.6-pg18-bookworm@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a",
+      "resources": {
+        "limits": {
+          "cpu": "1",
+          "memory": "1Gi"
+        },
+        "requests": {
+          "cpu": "100m",
+          "memory": "128Mi"
+        }
+      },
+      "settings": "data_checksums|on\neffective_io_concurrency|16\nfsync|on\nmax_connections|100\nserver_version|18.6 (Debian 18.6-1.pgdg12+2)\nshared_buffers|16384\nsynchronous_commit|on\n",
+      "dataset": "2000000|2000001000000|0",
+      "image_id": "docker.io/pgvector/pgvector@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a"
+    }
+  }
+}

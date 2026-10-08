@@ -1,0 +1,39 @@
+{
+  "demopostgresuser": {
+    "version": "18.6 (Debian 18.6-1.pgdg12+2)",
+    "pgvector": "0.8.6",
+    "records": 1000,
+    "checksum": "ad9ce5a9d4ae98617b23cdb5b78f5810",
+    "schema": "demopostgresuser_schema",
+    "non_superuser": true,
+    "hnsw_index_used": true,
+    "nearest_ids": [
+      501,
+      552,
+      553,
+      500,
+      449
+    ],
+    "synthetic_recall_at5": 1.0,
+    "other_database_denied": true
+  },
+  "testactionuser": {
+    "version": "18.6 (Debian 18.6-1.pgdg12+2)",
+    "pgvector": "0.8.6",
+    "records": 1000,
+    "checksum": "c0e9b2dcbd34758d5b64b883f71385d3",
+    "schema": "testactionuser_schema",
+    "non_superuser": true,
+    "hnsw_index_used": true,
+    "nearest_ids": [
+      501,
+      552,
+      553,
+      500,
+      449
+    ],
+    "synthetic_recall_at5": 1.0,
+    "other_database_denied": true
+  },
+  "wrong_password_rejected": true
+}

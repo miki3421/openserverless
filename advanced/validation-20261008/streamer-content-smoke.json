@@ -1,0 +1,27 @@
+[
+  {
+    "url": "http://demostaticuser.miniops.me/stream/web/advancedstream",
+    "authenticated": false,
+    "exact_stream_content": true
+  },
+  {
+    "url": "http://demostaticuser.miniops.me/web/demostaticuser/advancedstream",
+    "authenticated": false,
+    "exact_stream_content": true
+  },
+  {
+    "url": "http://stream.miniops.me/web/demostaticuser/advancedstream",
+    "authenticated": false,
+    "exact_stream_content": true
+  },
+  {
+    "url": "http://demostaticuser.miniops.me/stream/action/advancedstream",
+    "authenticated": true,
+    "exact_stream_content": true
+  },
+  {
+    "url": "http://demostaticuser.miniops.me/action/demostaticuser/advancedstream",
+    "authenticated": true,
+    "exact_stream_content": true
+  }
+]

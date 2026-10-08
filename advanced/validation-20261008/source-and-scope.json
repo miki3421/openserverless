@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-08",
+  "scope": "dedicated retained VM ops-advanced-rc7 only",
+  "root_start_commit": "5fde23a78b44620a378223122e63d7726203cbda",
+  "task_commit": "8ee5b6a0acdb6ceecd982e30a8b93925f4ce5576",
+  "operator_commit": "d6c83ba47635e3a54fca82b23f03a4930ac3c94d",
+  "operator_build_code_commit": "e919e86",
+  "testing_commit": "a6c9ef41d19700ee5613f46e2726aa80bc2fb55a",
+  "cli_version": "0.9.0-incubating+26i11g51-snapshot",
+  "operator_local_image": "docker.io/miki3421/ops-advanced-operator:postgres18-dev",
+  "operator_docker_image_id": "sha256:b71f60b525b3529ce786f5c119262b02234d4f3e9d739a6ebe7c1c10b858b7ee",
+  "postgres_dumper_local_image": "docker.io/miki3421/ops-advanced-pg-dumper:18.6-pgvector0.8.6-dev",
+  "postgres_dumper_docker_image_id": "sha256:b2bb10e4caf3d8eed37006bd12a352058ef4285a477539e3dc0b73435475837d",
+  "unit_tests": {
+    "bun_passed": 22,
+    "python_passed": 8,
+    "python_also_passed_inside_built_image": true
+  },
+  "inherited_application_suite": {
+    "passed": 11,
+    "failed": 1,
+    "failed_test": "7-static.sh",
+    "cloud_provisioning_excluded": true,
+    "tls_excluded": true
+  },
+  "full_setup_exit": 0,
+  "repeated_setup_exit_after_fix": 0,
+  "limits": [
+    "amd64 only",
+    "live Traefik only; Nginx/TLS templates rendered, not deployed",
+    "synthetic database data",
+    "primary pod restart, not node failure",
+    "brief warm-cache shared-VM benchmark; profile defaults differ"
+  ],
+  "known_issue": "Legacy SeaweedFS teardown raised TypeError during deletion of the old RC7 installation; only its diagnosed Whisk Kopf finalizer was removed in the lab. Teardown code is not fixed.",
+  "publication": "No pushes, PRs or registry publication in this increment."
+}

@@ -1,0 +1,61 @@
+{
+  "before": {
+    "openserverless-postgres-1-0": {
+      "in_recovery": false,
+      "datasets": {
+        "demopostgresuser": {
+          "rows": 1000,
+          "checksum": "ad9ce5a9d4ae98617b23cdb5b78f5810"
+        },
+        "testactionuser": {
+          "rows": 1000,
+          "checksum": "c0e9b2dcbd34758d5b64b883f71385d3"
+        }
+      }
+    },
+    "openserverless-postgres-2-0": {
+      "in_recovery": true,
+      "datasets": {
+        "demopostgresuser": {
+          "rows": 1000,
+          "checksum": "ad9ce5a9d4ae98617b23cdb5b78f5810"
+        },
+        "testactionuser": {
+          "rows": 1000,
+          "checksum": "c0e9b2dcbd34758d5b64b883f71385d3"
+        }
+      }
+    }
+  },
+  "after": {
+    "openserverless-postgres-1-0": {
+      "in_recovery": false,
+      "datasets": {
+        "demopostgresuser": {
+          "rows": 1000,
+          "checksum": "ad9ce5a9d4ae98617b23cdb5b78f5810"
+        },
+        "testactionuser": {
+          "rows": 1000,
+          "checksum": "c0e9b2dcbd34758d5b64b883f71385d3"
+        }
+      }
+    },
+    "openserverless-postgres-2-0": {
+      "in_recovery": true,
+      "datasets": {
+        "demopostgresuser": {
+          "rows": 1000,
+          "checksum": "ad9ce5a9d4ae98617b23cdb5b78f5810"
+        },
+        "testactionuser": {
+          "rows": 1000,
+          "checksum": "c0e9b2dcbd34758d5b64b883f71385d3"
+        }
+      }
+    }
+  },
+  "pvc_identity_preserved": true,
+  "primary_pod_recreated": "openserverless-postgres-1-0",
+  "ready_after_seconds": 14.32
+}

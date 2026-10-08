@@ -1,0 +1,195 @@
+{
+  "node": "ops-advanced-rc7",
+  "node_uid": "880b7b81-2809-4007-8669-92bd787f8869",
+  "k3s_version": "v1.37.1+k3s1",
+  "node_ready": true,
+  "all_ops_workload_controllers_ready": true,
+  "pvc_identities_preserved_on_repeat": true,
+  "devel_spec_preserved_on_repeat": true,
+  "static_root_exact_fixture_responses": 10,
+  "obsolete_static_test_phrase_present": false,
+  "workloads": [
+    {
+      "kind": "StatefulSet",
+      "name": "controller",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "couchdb",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "invoker",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "kafka",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-etcd",
+      "ready": 3,
+      "desired": 3
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-milvus-pulsarv3-bookie",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-milvus-pulsarv3-broker",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-milvus-pulsarv3-proxy",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-milvus-pulsarv3-recovery",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-milvus-pulsarv3-zookeeper",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-mongodb",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-operator",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-postgres-1",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-postgres-2",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-static",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-streamer-api",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "openserverless-system-api",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "redis",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "registry",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "seaweedfs",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "tika",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "zookeeper",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "Deployment",
+      "name": "kubegres-controller-manager",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "Deployment",
+      "name": "openserverless-milvus-standalone",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "Deployment",
+      "name": "openserverless-prometheus-alertmanager",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "Deployment",
+      "name": "openserverless-prometheus-kube-state-metrics",
+      "ready": 1,
+      "desired": 1
+    },
+    {
+      "kind": "Deployment",
+      "name": "openserverless-prometheus-server",
+      "ready": 1,
+      "desired": 1
+    }
+  ],
+  "images": {
+    "openserverless-operator-0": [
+      {
+        "image": "docker.io/miki3421/ops-advanced-operator:postgres18-dev",
+        "image_id": "sha256:a706a6ec3dbc8c8e9c32b4ffc2be7678cccf55bb6275c5727d1ef6b38c7c8f8c"
+      }
+    ],
+    "openserverless-postgres-1-0": [
+      {
+        "image": "sha256:b551e63a5606bdd3127b12a8120c6df8d71c812b29a7faf944b034cb9beb644a",
+        "image_id": "docker.io/pgvector/pgvector@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a"
+      }
+    ],
+    "openserverless-postgres-2-0": [
+      {
+        "image": "sha256:b551e63a5606bdd3127b12a8120c6df8d71c812b29a7faf944b034cb9beb644a",
+        "image_id": "docker.io/pgvector/pgvector@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a"
+      }
+    ]
+  }
+}

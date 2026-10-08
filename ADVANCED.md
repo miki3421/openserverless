@@ -39,7 +39,7 @@ The CLI source defaults to the personal task repository and `advanced` branch. F
 
 ```sh
 export OPS_HOME="$HOME/.ops-advanced"
-export OPS_REPO="https://github.com/miki3421/openserverless-task-new"
+export OPS_REPO="https://github.com/miki3421/openserverless-task-custom"
 export OPS_BRANCH=advanced
 export OPS_ROOT="/absolute/path/to/ops-advanced/oplugins"
 ```
@@ -61,7 +61,50 @@ Before enabling PostgreSQL 18:
 5. Implement and rehearse explicit PostgreSQL 16 to 18 migration using dump/restore or pg_upgrade. Keep the source volumes and verify rollback before any cutover. Test backup restoration and data integrity.
 6. Benchmark the same dataset and workload on 16 and 18 with equal resources, recording throughput, p95 latency, CPU, memory and storage I/O.
 
-Status: the PostgreSQL 18 development profile, local operator/backup builds, replication, manual promotion, user provisioning and backup/restore passed in an isolated Kind cluster inside the retained VM. Eight unit tests pass. A synthetic PostgreSQL 16-to-18 logical migration rehearsal also passed; see the report below. Full OPS application regression tests, migration of representative OPS data, ARM64 execution and performance benchmarks remain pending. The OPS RC7 K3s database and the original Kind cluster remain unchanged. The VM runtime inotify limit was raised from 128 to 1024 to support the additional cluster. See `oplugins-op/POSTGRES_ADVANCED.md` for build instructions and exact validation limits.
+Status: the initial PostgreSQL 18 profile, replication, manual promotion and user provisioning passed in the September isolated Kind lab. The synthetic PostgreSQL 16-to-18 migration rehearsal passed on 2026-10-06. On 2026-10-08, a fresh full OPS Advanced installation on the retained K3s VM passed the integrated SQL/pgvector, application, replication and repeated-setup checks described below. The RC7 PostgreSQL 16 namespace was replaced using new volumes; the separate migration-lab namespace was retained. Migration of representative production data, ARM64 execution and node-failure recovery remain pending. See `oplugins-op/POSTGRES_ADVANCED.md` for the historical validation boundaries.
+
+## Validazione integrata K3s di OPS Advanced (2026-10-08)
+
+La prova usa sempre la VM `ops-advanced-rc7`: Ubuntu 24.04, amd64, 6 vCPU, 16 GiB RAM, K3s `v1.37.1+k3s1` con containerd e Traefik. La CLI resta `0.9.0-incubating+26i11g51-snapshot`; i task locali sono quelli del branch personale `advanced`, con un `OPS_HOME` dedicato. L'operatore Advanced e l'immagine PostgreSQL dumper sono stati costruiti sul Docker dell'host e importati nel containerd della VM. Le immagini non sono state pubblicate su registry.
+
+Il namespace RC7 `openserverless` è stato sostituito con una installazione full e volumi nuovi; non è stato cambiato il tag sui dati PostgreSQL 16 esistenti. Il namespace `ops-pg-migration-lab` è stato conservato. Il setup completo termina con exit 0 e avvia PostgreSQL 18.6, pgvector 0.8.6 e due database pod, con checksum dei dati abilitati.
+
+Risultati ed evidenze, conservati in `advanced/validation-20261008/`:
+
+- 22 test Bun del setup/configurazione/ingress e 8 test Python PostgreSQL passati. Gli 8 test Python passano anche dentro l'immagine costruita.
+- 11/12 test della suite applicativa ereditata passati: PostgreSQL, FerretDB, Redis, SeaweedFS, utenti/login, runtime JavaScript/Python e SSO HTTP mock. Il provisioning cloud e TLS sono esclusi dalla prova su questo K3s HTTP già predisposto.
+- Due utenti non-superuser hanno scritto 1.000 record JSONB/vector ciascuno, usato HNSW e ottenuto gli stessi cinque risultati della ricerca esatta sul dataset sintetico. Connessioni al database dell'altro utente e password errate sono state rifiutate. La recall sul piccolo dataset non certifica la qualità di ricerca su dati reali.
+- Conteggi e checksum sono identici su primario e replica prima e dopo il riavvio del pod primario. I due pod tornano Ready in 14,32 secondi, conservando le identità PVC/PV. Questa prova non simula la perdita del nodo.
+- Il setup ripetuto termina con exit 0 e conserva dati, identità dei PVC e la specifica dell'utente `devel`.
+- Un file caricato nel bucket statico viene recuperato byte per byte tramite il dominio utente. Dieci richieste alla root restituiscono il file HTML dell'operatore, con hash invariato. Cinque prove verificano streaming reale su percorsi tenant, percorsi diretti e dominio dedicato, incluse azioni autenticate. La prova SSO HTTP è stata ripetuta dopo le correzioni.
+
+Correzioni locali necessarie per rendere riproducibile la prova:
+
+- Allineati su `advanced` i fix già collaudati del setup: attesa dell'Ingress, credenziali opzionali del registry, dipendenze tra componenti e profilo `full`.
+- Corretti i permessi del Dockerfile: directory padre create dall'utente runtime e UID/GID numerici nello stage dipendenze, che non definisce l'utente `openserverless`.
+- Eliminata la collisione tra ingress statico e streamer sulla root `/` del dominio tenant. Lo streamer conserva `/web`, `/action`, `/stream/web`, `/stream/action` e il dominio dedicato; la root resta al frontend. Entrambi i template Nginx/Traefik sono verificati con e senza TLS, ma la prova live usa solo Traefik.
+- Il setup crea `devel` solo quando manca. Un utente esistente deve diventare Ready; errori API o una cancellazione in corso non provocano una ricreazione. Il comando autonomo `add-user` mantiene il suo comportamento di creazione esplicita.
+
+`7-static.sh` resta FAIL: richiede una vecchia frase non presente nel file HTML distribuito dall'operatore. Inoltre il controllo aggiuntivo ha rivelato la collisione ingress descritta sopra, ora corretta. Il test ereditato non è stato modificato per nascondere il fallimento; la verifica di upload/lettura HTTP e quella del file HTML sono registrate separatamente.
+
+Durante la rimozione del vecchio namespace, il vecchio operatore RC7 ha fallito nel gestore SeaweedFS con `TypeError: can only concatenate str (not "NoneType") to str`. Dopo aver eliminato gli utenti, è stato rimosso il solo finalizer Kopf del Whisk in cancellazione, esclusivamente nel lab. Il difetto del teardown SeaweedFS resta da correggere; questa procedura manuale non diventa una strategia di uninstall generale.
+
+### Primo confronto prestazionale PostgreSQL 16/18
+
+Benchmark nei due database standalone del namespace separato, con il resto di OPS attivo e senza test applicativi concorrenti: stesso client pgbench 18, 2 milioni di account (`scale=20`), 4 connessioni, 2 thread, 20 secondi di warmup e tre esecuzioni di 40 secondi per versione, in ordine alternato. Entrambi i server hanno limite 1 CPU/1 GiB RAM e storage local-path sulla stessa VM. Tutte le sei esecuzioni terminano senza transazioni fallite.
+
+| Mediana per esecuzione | PostgreSQL 16.15 | PostgreSQL 18.6 |
+|---|---:|---:|
+| Transazioni/s | 837,83 | 830,83 |
+| Latenza p95, ms | 8,210 | 8,371 |
+| CPU server, secondi consumati | 10,23 | 9,77 |
+| Massimo RAM campionato, MiB | 907,89 | 895,21 |
+| Letture fisiche, MiB | 0,00 | 0,31 |
+| Scritture fisiche, MiB | 297,12 | 327,35 |
+
+In questo carico PostgreSQL 18 ha throughput inferiore di circa 0,84% e p95 superiore di circa 1,96%; le variazioni tra le esecuzioni sono maggiori delle differenze tra le mediane. Non è dimostrato un vantaggio prestazionale. Il confronto usa i profili effettivi: checksum off su 16/on su 18, `effective_io_concurrency=1/16`; non isola causalmente il solo numero di versione. È una misura breve con cache calda su VM condivisa. RAM è campionata ogni cinque secondi; I/O è misurato dai contatori del cgroup e risente dei checkpoint. Non misura capacità di produzione, traffico OPS end-to-end, prestazioni ANN o comportamento su dati più grandi della RAM.
+
+Gli script della prova sono in `advanced/lab/` e contengono vincoli al lab dedicato. Rimangono aperti: test ARM64, Nginx/Kind live, TLS live, recupero su perdita del nodo, migrazione applicativa con cutover e carichi rappresentativi dei progetti. Il lavoro sul backup del cluster resta accantonato.
 
 ## PostgreSQL 16-to-18 migration rehearsal (2026-10-06)
 
