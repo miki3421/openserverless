@@ -1,0 +1,15 @@
+{
+  "version": "3.5.2",
+  "user": "demouser",
+  "action": "advancedcouchprobe",
+  "activation_before": "c11344de1d6840e49344de1d6840e43d",
+  "activation_after": "e01a2cb1ac2e4f859a2cb1ac2eaf85d3",
+  "action_code_persisted": true,
+  "activation_result_and_logs_persisted": true,
+  "direct_couchdb_document_hashes_preserved": true,
+  "direct_attachment_bytes_verified": 0,
+  "user_spec_preserved": true,
+  "pvc_uid_preserved": true,
+  "other_namespace_private_action_denied": true,
+  "recover_and_verify_seconds": 9.58
+}

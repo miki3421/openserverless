@@ -20,11 +20,12 @@ import json
 import os
 import pathlib
 import socket
+import sys
 import subprocess
 import tempfile
 import urllib.request
 
-user = "demostaticuser"
+user = sys.argv[1] if len(sys.argv) > 1 else "demostaticuser"
 assert socket.gethostname() == "ops-advanced-rc7", "This test is restricted to the dedicated Advanced VM"
 spec = json.loads(subprocess.check_output(["kubectl", "-n", "openserverless", "get", "wsku", user, "-o", "json"]))["spec"]
 env = {**os.environ, "OPS_USER": user, "OPS_PASSWORD": spec["password"]}

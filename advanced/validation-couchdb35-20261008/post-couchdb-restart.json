@@ -1,0 +1,24 @@
+{
+  "version": "3.5.2",
+  "user": "demouser",
+  "action": "advancedcouchprobe",
+  "activation_before": "477e748e27ba4f74be748e27baef74d1",
+  "activation_after": "69710ba4858c456ab10ba4858ca56ace",
+  "action_code_persisted": true,
+  "activation_result_and_logs_persisted": true,
+  "direct_couchdb_document_hashes_preserved": true,
+  "direct_attachment_bytes_verified": 0,
+  "declarative_configuration_preserved": true,
+  "settings": {
+    "couchdb/single_node": "true",
+    "cluster/n": "1",
+    "query_server_config/reduce_limit": "false",
+    "compactions/openserverless_activations": "[{db_fragmentation, \"60%\"}, {view_fragmentation, \"60%\"}]",
+    "compactions/openserverless_subjects": "[{db_fragmentation, \"60%\"}, {view_fragmentation, \"60%\"}]",
+    "compactions/openserverless_whisks": "[{db_fragmentation, \"60%\"}, {view_fragmentation, \"60%\"}]"
+  },
+  "user_spec_preserved": true,
+  "pvc_uid_preserved": true,
+  "other_namespace_private_action_denied": true,
+  "recover_and_verify_seconds": 10.27
+}

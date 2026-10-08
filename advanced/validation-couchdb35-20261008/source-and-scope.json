@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-08",
+  "scope": "retained dedicated K3s VM ops-advanced-rc7, synthetic data only",
+  "task_commit": "427415bc7c8cafb0331aafe957ad79eaf3176b0c",
+  "operator_commit": "d5cfb08de2b03d25189770f2a8e40a0dfe29ea15",
+  "testing_commit": "a6c9ef41d19700ee5613f46e2726aa80bc2fb55a",
+  "cli_version": "0.9.0-incubating+26i11g51-snapshot",
+  "couchdb_image": "docker.io/apache/couchdb:3.5.2@sha256:c703989c0a370a1a6b179785bcb5b2b5501347bb0219d02d597d0a9107eb8d28",
+  "operator_local_image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+  "operator_docker_image_id": "sha256:fbc894ab85bfe0e0fddaf06e3e23dba0fba68d1c911e235215f2fc8c81b0c7d9",
+  "unit_tests": {
+    "python_passed": 25,
+    "bun_passed": 28
+  },
+  "full_setups_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "uninstalls_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "missing_namespace_repeat_uninstall_exit": 0,
+  "inherited_application_suite": {
+    "passed": 11,
+    "failed": 1,
+    "known_failure": "obsolete greeting assertion in 7-static.sh"
+  },
+  "post_reinstall_functional_checks_passed": true,
+  "couchdb_configuration_persistence_fixed": true,
+  "raw_namespace_deletion_limit": "The operator shares the namespace; direct deletion can remove it before finalization. Use ordered ops uninstall.",
+  "migration": "Existing CouchDB images/layouts or orphaned PVCs are refused; no 2.x migration performed.",
+  "limits": [
+    "K3s amd64 HTTP only",
+    "OpenShift requires a separately validated image and is refused",
+    "No production workload or throughput claims",
+    "No large attachment or node-failure test"
+  ],
+  "publication": "Local commits and locally imported images only; no pushes or PRs in this increment."
+}

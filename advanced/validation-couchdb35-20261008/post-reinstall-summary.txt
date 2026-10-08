@@ -1,0 +1,4 @@
+PASS after reinstall: 6-login.sh
+PASS after reinstall: 14-runtime-testing.sh
+PASS after reinstall: 11-sso-mock.sh
+PASS after reinstall: static, streaming, action/activation persistence

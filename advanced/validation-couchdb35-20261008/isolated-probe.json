@@ -1,0 +1,10 @@
+{
+  "version": "3.5.2",
+  "ops_initialization": true,
+  "design_views_queried": 11,
+  "crud": true,
+  "anonymous_denied": true,
+  "wrong_password_denied": true,
+  "service_users_authorized": true,
+  "unrelated_user_denied": true
+}

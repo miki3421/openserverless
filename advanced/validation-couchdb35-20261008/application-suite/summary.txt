@@ -1,0 +1,12 @@
+PASS 3-sys-redis.sh
+PASS 4a-sys-ferretdb.sh
+PASS 4b-sys-postgres.sh
+PASS 5-sys-seaweedfs.sh
+PASS 6-login.sh
+FAIL 7-static.sh (exit 1)
+PASS 8-user-redis.sh
+PASS 9a-user-ferretdb.sh
+PASS 9b-user-postgres.sh
+PASS 10-user-seaweedfs.sh
+PASS 14-runtime-testing.sh
+PASS 11-sso-mock.sh

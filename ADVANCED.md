@@ -87,7 +87,29 @@ Correzioni locali necessarie per rendere riproducibile la prova:
 
 `7-static.sh` resta FAIL: richiede una vecchia frase non presente nel file HTML distribuito dall'operatore. Inoltre il controllo aggiuntivo ha rivelato la collisione ingress descritta sopra, ora corretta. Il test ereditato non è stato modificato per nascondere il fallimento; la verifica di upload/lettura HTTP e quella del file HTML sono registrate separatamente.
 
-Durante la rimozione del vecchio namespace, il vecchio operatore RC7 ha fallito nel gestore SeaweedFS con `TypeError: can only concatenate str (not "NoneType") to str`. Dopo aver eliminato gli utenti, è stato rimosso il solo finalizer Kopf del Whisk in cancellazione, esclusivamente nel lab. Il difetto del teardown SeaweedFS resta da correggere; questa procedura manuale non diventa una strategia di uninstall generale.
+Durante la rimozione del vecchio namespace, il vecchio operatore RC7 ha fallito nel gestore SeaweedFS con `TypeError: can only concatenate str (not "NoneType") to str`. Dopo aver eliminato gli utenti, è stato rimosso il solo finalizer Kopf del Whisk in cancellazione, esclusivamente nel lab. Questa era una limitazione della prima prova: il successivo incremento CouchDB ha corretto il teardown e verificato la rimozione tramite OPS senza forzare i finalizer, come descritto sotto.
+
+Intervento approvato e implementato nel giro CouchDB: la cancellazione tollera risorse già assenti e propaga gli altri errori per consentire il retry dell'operatore. WhiskUser e Whisk vengono rimossi mentre l'operatore è ancora attivo; il namespace viene rimosso dopo il completamento dei finalizer. Cleanup ripetuto, risorse parzialmente assenti, errori di autorizzazione e cicli completi di reinstallazione sono verificati senza rimozione generalizzata dei finalizer.
+
+## CouchDB 3.5.2 e disinstallazione ordinata (2026-10-08)
+
+Il profilo `oplugins-op/openserverless/files/couchdb-profile.json` fissa CouchDB 3.5.2 all'immagine ufficiale `docker.io/apache/couchdb:3.5.2@sha256:c703989c0a370a1a6b179785bcb5b2b5501347bb0219d02d597d0a9107eb8d28`. Operatore e catalogo task condividono lo stesso riferimento. La prova usa sempre la VM K3s `ops-advanced-rc7`; tutte le installazioni complete di questo incremento usano volumi nuovi. Il guard rifiuta immagini/layout diversi e PVC CouchDB orfani prima di applicare risorse CouchDB. Non effettua una migrazione dei dati 2.x. OpenShift è esplicitamente bloccato finché non viene validata un'immagine adatta ai suoi vincoli.
+
+Le impostazioni del profilo single-node, del numero di repliche, del reduce limit delle viste e della compattazione sono dichiarate in un ConfigMap. A ogni avvio il container ne copia il file in `local.d` prima di eseguire l'entrypoint; il checksum della configurazione è nel template del pod. Questo mantiene le impostazioni anche quando il pod viene ricreato. Il file sorgente non contiene credenziali e resta montato in sola lettura; la copia nel container è scrivibile dall'entrypoint ufficiale. L'inizializzatore accetta un server già configurato come single-node e non stampa più la configurazione completa con le password.
+
+Risultati conservati in `advanced/validation-couchdb35-20261008/`:
+
+- 25 test Python e 28 test Bun passati. Comprendono rifiuto di aggiornamenti impliciti, errori API, credenziali nei log, cleanup idempotente e ordine dei finalizer. Il catalogo è verificato contro il profilo.
+- Due prove CouchDB isolate, inclusa una installazione vuota con impostazioni dichiarate: inizializzazione OPS, 11 viste interne, CRUD, accesso autorizzato di controller/invoker, rifiuto di accesso anonimo, password errata e utente estraneo. Un record nella prova isolata è sopravvissuto alla ricreazione del pod.
+- Suite applicativa completa: 11/12 PASS, compreso SSO HTTP reale con provider mock, JavaScript/Python, PostgreSQL, FerretDB, Redis e SeaweedFS. Rimane il precedente FAIL di `7-static.sh`, che cerca una frase obsoleta. Upload e lettura HTTP byte per byte del frontend sono verificati separatamente.
+- Tre installazioni full e tre disinstallazioni completate nel lab durante l'incremento, più una seconda disinstallazione già assente gestita come no-op. Nessuna rimozione manuale dei finalizer. Il namespace separato PostgreSQL conserva le identità dei PVC; la reinstallazione CouchDB usa un nuovo PVC.
+- La definizione finale con configurazione persistente è stata installata da zero. Dopo la reinstallazione passano login, runtime, SSO, upload statico e cinque percorsi di streaming, incluse azioni private autenticate.
+- Dopo il riavvio di CouchDB sono ancora leggibili codice, risultato e log delle attivazioni; una nuova invocazione riesce. Sono confrontati direttamente via HTTP CouchDB anche gli hash dei documenti subjects/whisks/activations, così la prova non dipende solo dalla cache del controller. I dati di questa azione sono inline; nessun allegato binario viene esercitato da questa prova.
+- Identità dell'utente, UID del PVC e impostazioni single-node/repliche/viste/compattazione rimangono invariati al riavvio. Le credenziali note del Whisk e di CouchDB non compaiono nei log del job di inizializzazione della definizione finale.
+
+Il percorso supportato è `ops setup cluster --uninstall`: attende WhiskUser e Whisk prima di rimuovere il namespace e si ferma se manca un operatore Ready, se un'API fallisce o se un finalizer scade. Non usa `forcedelete.src` né elimina finalizer per aggirare errori. Non cancella namespace diversi né CRD globali. Una cancellazione diretta con `kubectl delete namespace` può ancora eliminare l'operatore, che risiede nello stesso namespace, prima che completi la pulizia; per garantire anche quel caso servirebbe un operatore con un ciclo di vita indipendente.
+
+Questa è validazione di nuove installazioni su K3s amd64 e HTTP con dati sintetici. Migrazione CouchDB 2.x, OpenShift, ARM64, TLS live, allegati grandi, carichi rappresentativi e recupero dalla perdita del nodo restano da verificare. Nessun guadagno prestazionale CouchDB è dichiarato. Gli script in `advanced/lab/` sono vincolati al lab dedicato.
 
 ### Primo confronto prestazionale PostgreSQL 16/18
 

@@ -20,7 +20,7 @@ set -uo pipefail
 source /home/ubuntu/ops-advanced-test/env.sh
 test "$(hostname)" = ops-advanced-rc7 || exit 2
 cd /home/ubuntu/ops-advanced-test/testing/tests || exit 2
-results=/home/ubuntu/ops-advanced-test/results/application-suite
+results="${1:-/home/ubuntu/ops-advanced-test/results/application-suite}"
 mkdir -p "$results"
 chmod 700 "$results"
 : > "$results/summary.txt"

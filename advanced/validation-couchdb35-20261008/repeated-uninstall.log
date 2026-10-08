@@ -1,0 +1,4 @@
+Using current context
+CURRENT   NAME      CLUSTER   AUTHINFO   NAMESPACE
+*         default   default   default    
+OpenServerless namespace is already absent.
