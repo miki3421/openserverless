@@ -1,0 +1,36 @@
+{"test": "buildInfo", "status": "PASS", "version": "7.0.77", "extensions": null}
+{"test": "scoped_alpha_create", "status": "PASS", "roles": [{"role": "readWrite", "db": "scoped_alpha_ferretdb"}]}
+{"test": "scoped_beta_create", "status": "PASS", "roles": [{"role": "readWrite", "db": "scoped_beta_ferretdb"}]}
+{"test": "scoped_alpha_own_crud_index_aggregate", "status": "PASS"}
+{"test": "scoped_beta_own_crud_index_aggregate", "status": "PASS"}
+{"test": "scoped_alpha_cross_read", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"_id": 1, "owner": "scoped_beta", "value": 4}}
+{"test": "scoped_alpha_cross_write", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": "intruder-scoped_alpha"}
+{"test": "scoped_alpha_cross_update", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": 1}
+{"test": "scoped_alpha_create_admin", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"ok": 1}}
+{"test": "scoped_alpha_list_peer_collections", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": ["synthetic"]}
+{"test": "scoped_alpha_cross_drop", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"nIndexesWas": 1, "ns": "scoped_beta_ferretdb.synthetic", "ok": 1.0}}
+{"test": "scoped_beta_cross_read", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"_id": 1, "owner": "scoped_alpha", "value": 4}}
+{"test": "scoped_beta_cross_write", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": "intruder-scoped_beta"}
+{"test": "scoped_beta_cross_update", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": 1}
+{"test": "scoped_beta_create_admin", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"ok": 1}}
+{"test": "scoped_beta_list_peer_collections", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": ["synthetic"]}
+{"test": "scoped_beta_cross_drop", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"nIndexesWas": 1, "ns": "scoped_alpha_ferretdb.synthetic", "ok": 1.0}}
+{"test": "default_alpha_create", "status": "PASS", "roles": []}
+{"test": "default_beta_create", "status": "PASS", "roles": []}
+{"test": "default_alpha_own_crud_index_aggregate", "status": "PASS"}
+{"test": "default_beta_own_crud_index_aggregate", "status": "PASS"}
+{"test": "default_alpha_cross_read", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"_id": 1, "owner": "default_beta", "value": 4}}
+{"test": "default_alpha_cross_write", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": "intruder-default_alpha"}
+{"test": "default_alpha_cross_update", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": 1}
+{"test": "default_alpha_create_admin", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"ok": 1}}
+{"test": "default_alpha_list_peer_collections", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": ["synthetic"]}
+{"test": "default_alpha_cross_drop", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"nIndexesWas": 1, "ns": "default_beta_ferretdb.synthetic", "ok": 1.0}}
+{"test": "default_beta_cross_read", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"_id": 1, "owner": "default_alpha", "value": 4}}
+{"test": "default_beta_cross_write", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": "intruder-default_beta"}
+{"test": "default_beta_cross_update", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": 1}
+{"test": "default_beta_create_admin", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"ok": 1}}
+{"test": "default_beta_list_peer_collections", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": ["synthetic"]}
+{"test": "default_beta_cross_drop", "status": "SECURITY_FAIL", "reason": "operation succeeded", "result": {"nIndexesWas": 1, "ns": "default_alpha_ferretdb.synthetic", "ok": 1.0}}
+{"test": "anonymous", "status": "PASS", "type": "OperationFailure", "code": 13, "message": "Command find requires authentication, full error: {'ok': 0.0, 'errmsg': 'Command find requires authentication', 'code': 13, 'codeName': 'Unauthorized'}"}
+{"test": "wrong_password", "status": "PASS", "type": "OperationFailure", "code": 18, "message": "Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}"}
+{"test": "summary", "status": "RECORDED", "mode": "ferret18", "counts": {"PASS": 11, "SECURITY_FAIL": 24}}

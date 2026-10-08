@@ -1,0 +1,47 @@
+{
+  "candidates": [
+    {
+      "kind": "StatefulSet",
+      "name": "ferret27",
+      "replicas": 0,
+      "uid": "b47c33ad-74d2-4466-8e29-4af6bd402da2",
+      "phase": null
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "native18",
+      "replicas": 0,
+      "uid": "2667cb48-b06b-4c70-8570-0de453c85b5a",
+      "phase": null
+    },
+    {
+      "kind": "StatefulSet",
+      "name": "pg17-docdb",
+      "replicas": 0,
+      "uid": "e6521e24-5f1a-4c27-8dbd-57963b846c93",
+      "phase": null
+    },
+    {
+      "kind": "Deployment",
+      "name": "legacy16",
+      "replicas": 0,
+      "uid": "76555a6b-e1e1-41fc-9a2d-6ff32e9ba094",
+      "phase": null
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "name": "data-native18-0",
+      "replicas": null,
+      "uid": "2a7f6abc-4a61-4ef7-8968-944c6107109c",
+      "phase": "Bound"
+    },
+    {
+      "kind": "PersistentVolumeClaim",
+      "name": "data-pg17-docdb-0",
+      "replicas": null,
+      "uid": "cfc2ca1d-55e0-49e7-b359-3c30506de613",
+      "phase": "Bound"
+    }
+  ],
+  "ops_running_pods_all_ready": true
+}

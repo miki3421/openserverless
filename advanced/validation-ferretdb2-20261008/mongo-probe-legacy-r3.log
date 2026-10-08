@@ -1,0 +1,6 @@
+{"test": "sql_alpha_ferretdb_own_crud_index_aggregate", "status": "PASS"}
+{"test": "sql_beta_ferretdb_own_crud_index_aggregate", "status": "PASS"}
+{"test": "sql_alpha_ferretdb_cross_read", "status": "PASS", "result": null, "reason": "peer fixture inaccessible"}
+{"test": "sql_alpha_ferretdb_cross_write", "status": "PASS", "peer_data_changed": false}
+{"test": "sql_beta_ferretdb_cross_read", "status": "PASS", "result": null, "reason": "peer fixture inaccessible"}
+{"test": "sql_beta_ferretdb_cross_write", "status": "PASS", "peer_data_changed": false}

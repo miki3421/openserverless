@@ -1,0 +1,14 @@
+{"test": "sql_alpha_ferretdb_sql_own", "status": "PASS"}
+{"test": "sql_beta_ferretdb_sql_own", "status": "PASS"}
+{"test": "sql_alpha_ferretdb_sql_deny_sql_beta_ferretdb", "status": "PASS", "sqlstate": "42501"}
+{"test": "sql_alpha_ferretdb_sql_deny_postgres", "status": "PASS", "sqlstate": "42501"}
+{"test": "sql_alpha_ferretdb_mongo_own_crud", "status": "PASS"}
+{"test": "sql_beta_ferretdb_sql_deny_sql_alpha_ferretdb", "status": "PASS", "sqlstate": "42501"}
+{"test": "sql_beta_ferretdb_sql_deny_postgres", "status": "PASS", "sqlstate": "42501"}
+{"test": "sql_beta_ferretdb_mongo_own_crud", "status": "PASS"}
+{"test": "sql_alpha_ferretdb_mongo_cross_read", "status": "SECURITY_FAIL", "result": {"_id": 1, "owner": "beta"}}
+{"test": "sql_alpha_ferretdb_mongo_cross_write", "status": "SECURITY_FAIL", "result": "intruder-sql_alpha_ferretdb"}
+{"test": "sql_beta_ferretdb_mongo_cross_read", "status": "SECURITY_FAIL", "result": {"_id": 1, "owner": "alpha"}}
+{"test": "sql_beta_ferretdb_mongo_cross_write", "status": "SECURITY_FAIL", "result": "intruder-sql_beta_ferretdb"}
+{"test": "legacy_PLAIN", "status": "INCOMPATIBLE", "code": 334}
+{"test": "sql_backend_routing", "status": "RECORDED", "logical_tenant_storage": [["sql_alpha_ferretdb", "system.dbSentinel"], ["sql_alpha_ferretdb", "synthetic"], ["sql_beta_ferretdb", "system.dbSentinel"], ["sql_beta_ferretdb", "synthetic"]]}

@@ -1,0 +1,63 @@
+Traceback (most recent call last):
+  File "/probe/legacy_check.py", line 14, in <module>
+    c[db].legacy_synthetic.insert_many([{"_id":1,"owner":label,"value":3},{"_id":2,"owner":label,"value":7}])
+  File "/usr/local/lib/python3.12/site-packages/pymongo/_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/collection.py", line 959, in insert_many
+    blk.execute(write_concern, session, _Op.INSERT)
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/bulk.py", line 609, in execute
+    return self.execute_command(generator, write_concern, session, operation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/bulk.py", line 470, in execute_command
+    _ = client._retryable_write(
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/mongo_client.py", line 2099, in _retryable_write
+    return self._retry_with_session(retryable, func, s, bulk, operation, operation_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/mongo_client.py", line 1969, in _retry_with_session
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/_csot.py", line 126, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/mongo_client.py", line 2022, in _retry_internal
+    ).run()
+      ^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/mongo_client.py", line 2890, in run
+    res = self._read() if self._is_read else self._write()
+                                             ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/mongo_client.py", line 3088, in _write
+    with self._client._checkout(self._server, self._session) as conn:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/mongo_client.py", line 2699, in __enter__
+    conn = pool_checkout.__enter__()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/pool.py", line 1196, in __enter__
+    conn = pool._get_conn(time.monotonic(), handler=self._handler)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/pool.py", line 1025, in _get_conn
+    conn = self.connect(handler=handler)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/pool.py", line 904, in connect
+    conn.authenticate()
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/pool.py", line 473, in authenticate
+    auth.authenticate(creds, self, reauthenticate=reauthenticate)
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/auth.py", line 447, in authenticate
+    auth_func(credentials, conn)
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/auth.py", line 329, in _authenticate_plain
+    conn.command(source, cmd)
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/helpers.py", line 51, in inner
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/pool.py", line 396, in command
+    return run_command(
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/command_runner.py", line 440, in run_command
+    docs, _, _ = _run_command(
+                 ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/pymongo/synchronous/command_runner.py", line 214, in _run_command
+    helpers_shared._check_command_response(
+  File "/usr/local/lib/python3.12/site-packages/pymongo/helpers_shared.py", line 327, in _check_command_response
+    raise OperationFailure(errmsg, code, response, max_wire_version)
+pymongo.errors.OperationFailure: [msg_saslstart.go:81 pg.(*Handler).MsgSASLStart] [pg.go:140 pg.(*Handler).DBPool] [pool.go:131 pgdb.NewPool] [pool.go:171 pgdb.(*Pool).checkConnection] failed to connect to `host=pg17-docdb user=sql_alpha_ferretdb database=postgres`: server error (FATAL: permission denied for database "postgres" (SQLSTATE 42501)), full error: {'ok': 0.0, 'errmsg': '[msg_saslstart.go:81 pg.(*Handler).MsgSASLStart] [pg.go:140 pg.(*Handler).DBPool] [pool.go:131 pgdb.NewPool] [pool.go:171 pgdb.(*Pool).checkConnection] failed to connect to `host=pg17-docdb user=sql_alpha_ferretdb database=postgres`: server error (FATAL: permission denied for database "postgres" (SQLSTATE 42501))', 'code': 1, 'codeName': 'InternalError'}

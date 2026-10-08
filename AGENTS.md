@@ -11,3 +11,9 @@
 - Do not delete existing branches or remote refs unless the user explicitly asks for that exact deletion.
 
 These rules apply to all OPS Advanced work, including core OPS, CLI, task, operator, admin API, runtimes, and related repositories.
+
+## Component upgrades and migration scope
+
+- During component modernization, develop and validate fresh installations in the dedicated lab.
+- Defer migration orchestration and development of `ops setup cluster --upgrade` until component modernization is complete. At that stage, evaluate the command with the user before implementing it.
+- Retain guards that refuse implicit reuse or upgrades of existing database volumes; deferring migration work does not authorize bypassing them.

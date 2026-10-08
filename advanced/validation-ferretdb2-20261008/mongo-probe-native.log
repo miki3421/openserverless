@@ -1,0 +1,5 @@
+{"test": "buildInfo", "status": "PASS", "version": "7.0.0", "extensions": null}
+{"test": "scoped_alpha_create", "status": "UNSUPPORTED", "type": "OperationFailure", "code": 31, "message": "The specified value for the role is invalid: 'readWrite'., full error: {'ok': 0.0, 'code': 31, 'codeName': 'RoleNotFound', 'errmsg': \"The specified value for the role is invalid: 'readWrite'.\"}"}
+{"test": "anonymous", "status": "PASS", "type": "OperationFailure", "code": 13, "message": "Command find is not allowed as the connection is not authenticated yet., full error: {'ok': 0.0, 'code': 13, 'codeName': 'Unauthorized', 'errmsg': 'Command find is not allowed as the connection is not authenticated yet.'}"}
+{"test": "wrong_password", "status": "PASS", "type": "OperationFailure", "code": 18, "message": "Invalid key, full error: {'ok': 0.0, 'code': 18, 'codeName': 'AuthenticationFailed', 'errmsg': 'Invalid key'}"}
+{"test": "summary", "status": "RECORDED", "mode": "native", "counts": {"PASS": 3, "UNSUPPORTED": 1}}

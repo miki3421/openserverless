@@ -1,0 +1,2152 @@
+{
+  "recorded_utc": "2026-10-08T17:48:54.742754+00:00",
+  "vm": "ops-advanced-rc7",
+  "namespace": "ops-ferretdb2-lab",
+  "probes": {
+    "mongo-probe-ferret": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:37:39Z",
+          "lastTransitionTime": "2026-10-08T17:37:39Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:37:39Z",
+          "lastTransitionTime": "2026-10-08T17:37:39Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": [
+        {
+          "test": "buildInfo",
+          "status": "PASS",
+          "version": "7.0.77",
+          "extensions": null
+        },
+        {
+          "test": "scoped_alpha_create",
+          "status": "PASS",
+          "roles": [
+            {
+              "role": "readWrite",
+              "db": "scoped_alpha_ferretdb"
+            }
+          ]
+        },
+        {
+          "test": "scoped_beta_create",
+          "status": "PASS",
+          "roles": [
+            {
+              "role": "readWrite",
+              "db": "scoped_beta_ferretdb"
+            }
+          ]
+        },
+        {
+          "test": "scoped_alpha_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "scoped_beta_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "scoped_alpha_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "scoped_beta",
+            "value": 4
+          }
+        },
+        {
+          "test": "scoped_alpha_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-scoped_alpha"
+        },
+        {
+          "test": "scoped_alpha_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "scoped_alpha_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "scoped_alpha_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "scoped_alpha_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "scoped_beta_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "scoped_beta_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "scoped_alpha",
+            "value": 4
+          }
+        },
+        {
+          "test": "scoped_beta_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-scoped_beta"
+        },
+        {
+          "test": "scoped_beta_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "scoped_beta_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "scoped_beta_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "scoped_beta_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "scoped_alpha_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "default_alpha_create",
+          "status": "PASS",
+          "roles": []
+        },
+        {
+          "test": "default_beta_create",
+          "status": "PASS",
+          "roles": []
+        },
+        {
+          "test": "default_alpha_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "default_beta_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "default_alpha_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "default_beta",
+            "value": 4
+          }
+        },
+        {
+          "test": "default_alpha_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-default_alpha"
+        },
+        {
+          "test": "default_alpha_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "default_alpha_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "default_alpha_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "default_alpha_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "default_beta_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "default_beta_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "default_alpha",
+            "value": 4
+          }
+        },
+        {
+          "test": "default_beta_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-default_beta"
+        },
+        {
+          "test": "default_beta_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "default_beta_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "default_beta_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "default_beta_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "default_alpha_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "anonymous",
+          "status": "PASS",
+          "type": "OperationFailure",
+          "code": 13,
+          "message": "Command find requires authentication, full error: {'ok': 0.0, 'errmsg': 'Command find requires authentication', 'code': 13, 'codeName': 'Unauthorized'}"
+        },
+        {
+          "test": "wrong_password",
+          "status": "PASS",
+          "type": "OperationFailure",
+          "code": 18,
+          "message": "Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}"
+        },
+        {
+          "test": "summary",
+          "status": "RECORDED",
+          "mode": "ferret",
+          "counts": {
+            "PASS": 11,
+            "SECURITY_FAIL": 24
+          }
+        }
+      ]
+    },
+    "mongo-probe-ferret18": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:40:29Z",
+          "lastTransitionTime": "2026-10-08T17:40:29Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:40:29Z",
+          "lastTransitionTime": "2026-10-08T17:40:29Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": [
+        {
+          "test": "buildInfo",
+          "status": "PASS",
+          "version": "7.0.77",
+          "extensions": null
+        },
+        {
+          "test": "scoped_alpha_create",
+          "status": "PASS",
+          "roles": [
+            {
+              "role": "readWrite",
+              "db": "scoped_alpha_ferretdb"
+            }
+          ]
+        },
+        {
+          "test": "scoped_beta_create",
+          "status": "PASS",
+          "roles": [
+            {
+              "role": "readWrite",
+              "db": "scoped_beta_ferretdb"
+            }
+          ]
+        },
+        {
+          "test": "scoped_alpha_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "scoped_beta_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "scoped_alpha_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "scoped_beta",
+            "value": 4
+          }
+        },
+        {
+          "test": "scoped_alpha_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-scoped_alpha"
+        },
+        {
+          "test": "scoped_alpha_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "scoped_alpha_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "scoped_alpha_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "scoped_alpha_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "scoped_beta_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "scoped_beta_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "scoped_alpha",
+            "value": 4
+          }
+        },
+        {
+          "test": "scoped_beta_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-scoped_beta"
+        },
+        {
+          "test": "scoped_beta_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "scoped_beta_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "scoped_beta_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "scoped_beta_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "scoped_alpha_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "default_alpha_create",
+          "status": "PASS",
+          "roles": []
+        },
+        {
+          "test": "default_beta_create",
+          "status": "PASS",
+          "roles": []
+        },
+        {
+          "test": "default_alpha_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "default_beta_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "default_alpha_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "default_beta",
+            "value": 4
+          }
+        },
+        {
+          "test": "default_alpha_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-default_alpha"
+        },
+        {
+          "test": "default_alpha_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "default_alpha_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "default_alpha_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "default_alpha_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "default_beta_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "default_beta_cross_read",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "_id": 1,
+            "owner": "default_alpha",
+            "value": 4
+          }
+        },
+        {
+          "test": "default_beta_cross_write",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": "intruder-default_beta"
+        },
+        {
+          "test": "default_beta_cross_update",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": 1
+        },
+        {
+          "test": "default_beta_create_admin",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "ok": 1
+          }
+        },
+        {
+          "test": "default_beta_list_peer_collections",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": [
+            "synthetic"
+          ]
+        },
+        {
+          "test": "default_beta_cross_drop",
+          "status": "SECURITY_FAIL",
+          "reason": "operation succeeded",
+          "result": {
+            "nIndexesWas": 1,
+            "ns": "default_alpha_ferretdb.synthetic",
+            "ok": 1.0
+          }
+        },
+        {
+          "test": "anonymous",
+          "status": "PASS",
+          "type": "OperationFailure",
+          "code": 13,
+          "message": "Command find requires authentication, full error: {'ok': 0.0, 'errmsg': 'Command find requires authentication', 'code': 13, 'codeName': 'Unauthorized'}"
+        },
+        {
+          "test": "wrong_password",
+          "status": "PASS",
+          "type": "OperationFailure",
+          "code": 18,
+          "message": "Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'}"
+        },
+        {
+          "test": "summary",
+          "status": "RECORDED",
+          "mode": "ferret18",
+          "counts": {
+            "PASS": 11,
+            "SECURITY_FAIL": 24
+          }
+        }
+      ]
+    },
+    "mongo-probe-legacy": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:44:20Z",
+          "lastTransitionTime": "2026-10-08T17:44:20Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:44:20Z",
+          "lastTransitionTime": "2026-10-08T17:44:20Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": []
+    },
+    "mongo-probe-legacy-r2": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:45:04Z",
+          "lastTransitionTime": "2026-10-08T17:45:04Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:45:04Z",
+          "lastTransitionTime": "2026-10-08T17:45:04Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": []
+    },
+    "mongo-probe-legacy-r3": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:46:02Z",
+          "lastTransitionTime": "2026-10-08T17:46:02Z",
+          "message": "Reached expected number of succeeded pods",
+          "reason": "CompletionsReached",
+          "status": "True",
+          "type": "SuccessCriteriaMet"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:46:02Z",
+          "lastTransitionTime": "2026-10-08T17:46:02Z",
+          "message": "Reached expected number of succeeded pods",
+          "reason": "CompletionsReached",
+          "status": "True",
+          "type": "Complete"
+        }
+      ],
+      "records": [
+        {
+          "test": "sql_alpha_ferretdb_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "sql_beta_ferretdb_own_crud_index_aggregate",
+          "status": "PASS"
+        },
+        {
+          "test": "sql_alpha_ferretdb_cross_read",
+          "status": "PASS",
+          "result": null,
+          "reason": "peer fixture inaccessible"
+        },
+        {
+          "test": "sql_alpha_ferretdb_cross_write",
+          "status": "PASS",
+          "peer_data_changed": false
+        },
+        {
+          "test": "sql_beta_ferretdb_cross_read",
+          "status": "PASS",
+          "result": null,
+          "reason": "peer fixture inaccessible"
+        },
+        {
+          "test": "sql_beta_ferretdb_cross_write",
+          "status": "PASS",
+          "peer_data_changed": false
+        }
+      ]
+    },
+    "mongo-probe-native": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:37:39Z",
+          "lastTransitionTime": "2026-10-08T17:37:39Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:37:39Z",
+          "lastTransitionTime": "2026-10-08T17:37:39Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": [
+        {
+          "test": "buildInfo",
+          "status": "PASS",
+          "version": "7.0.0",
+          "extensions": null
+        },
+        {
+          "test": "scoped_alpha_create",
+          "status": "UNSUPPORTED",
+          "type": "OperationFailure",
+          "code": 31,
+          "message": "The specified value for the role is invalid: 'readWrite'., full error: {'ok': 0.0, 'code': 31, 'codeName': 'RoleNotFound', 'errmsg': \"The specified value for the role is invalid: 'readWrite'.\"}"
+        },
+        {
+          "test": "anonymous",
+          "status": "PASS",
+          "type": "OperationFailure",
+          "code": 13,
+          "message": "Command find is not allowed as the connection is not authenticated yet., full error: {'ok': 0.0, 'code': 13, 'codeName': 'Unauthorized', 'errmsg': 'Command find is not allowed as the connection is not authenticated yet.'}"
+        },
+        {
+          "test": "wrong_password",
+          "status": "PASS",
+          "type": "OperationFailure",
+          "code": 18,
+          "message": "Invalid key, full error: {'ok': 0.0, 'code': 18, 'codeName': 'AuthenticationFailed', 'errmsg': 'Invalid key'}"
+        },
+        {
+          "test": "summary",
+          "status": "RECORDED",
+          "mode": "native",
+          "counts": {
+            "PASS": 3,
+            "UNSUPPORTED": 1
+          }
+        }
+      ]
+    },
+    "mongo-probe-native-roles": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:40:04Z",
+          "lastTransitionTime": "2026-10-08T17:40:04Z",
+          "message": "Reached expected number of succeeded pods",
+          "reason": "CompletionsReached",
+          "status": "True",
+          "type": "SuccessCriteriaMet"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:40:04Z",
+          "lastTransitionTime": "2026-10-08T17:40:04Z",
+          "message": "Reached expected number of succeeded pods",
+          "reason": "CompletionsReached",
+          "status": "True",
+          "type": "Complete"
+        }
+      ],
+      "records": [
+        {
+          "test": "custom_wildcard_create",
+          "status": "UNSUPPORTED",
+          "type": "OperationFailure",
+          "code": 115,
+          "message": "The CreateRole command is currently unsupported., full error: {'ok': 0.0, 'code': 115, 'codeName': 'CommandNotSupported', 'errmsg': 'The CreateRole command is currently unsupported.'}"
+        },
+        {
+          "test": "custom_exact_create",
+          "status": "UNSUPPORTED",
+          "type": "OperationFailure",
+          "code": 115,
+          "message": "The CreateRole command is currently unsupported., full error: {'ok': 0.0, 'code': 115, 'codeName': 'CommandNotSupported', 'errmsg': 'The CreateRole command is currently unsupported.'}"
+        }
+      ]
+    },
+    "mongo-probe-native-roles-strict": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:48:45Z",
+          "lastTransitionTime": "2026-10-08T17:48:45Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:48:45Z",
+          "lastTransitionTime": "2026-10-08T17:48:45Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": [
+        {
+          "test": "custom_wildcard_create",
+          "status": "UNSUPPORTED",
+          "type": "OperationFailure",
+          "code": 115,
+          "message": "The CreateRole command is currently unsupported., full error: {'ok': 0.0, 'code': 115, 'codeName': 'CommandNotSupported', 'errmsg': 'The CreateRole command is currently unsupported.'}"
+        },
+        {
+          "test": "custom_exact_create",
+          "status": "UNSUPPORTED",
+          "type": "OperationFailure",
+          "code": 115,
+          "message": "The CreateRole command is currently unsupported., full error: {'ok': 0.0, 'code': 115, 'codeName': 'CommandNotSupported', 'errmsg': 'The CreateRole command is currently unsupported.'}"
+        }
+      ]
+    },
+    "mongo-probe-sql-roles": {
+      "conditions": [
+        {
+          "lastProbeTime": "2026-10-08T17:42:06Z",
+          "lastTransitionTime": "2026-10-08T17:42:06Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "FailureTarget"
+        },
+        {
+          "lastProbeTime": "2026-10-08T17:42:06Z",
+          "lastTransitionTime": "2026-10-08T17:42:06Z",
+          "message": "Job has reached the specified backoff limit",
+          "reason": "BackoffLimitExceeded",
+          "status": "True",
+          "type": "Failed"
+        }
+      ],
+      "records": [
+        {
+          "test": "sql_alpha_ferretdb_sql_own",
+          "status": "PASS"
+        },
+        {
+          "test": "sql_beta_ferretdb_sql_own",
+          "status": "PASS"
+        },
+        {
+          "test": "sql_alpha_ferretdb_sql_deny_sql_beta_ferretdb",
+          "status": "PASS",
+          "sqlstate": "42501"
+        },
+        {
+          "test": "sql_alpha_ferretdb_sql_deny_postgres",
+          "status": "PASS",
+          "sqlstate": "42501"
+        },
+        {
+          "test": "sql_alpha_ferretdb_mongo_own_crud",
+          "status": "PASS"
+        },
+        {
+          "test": "sql_beta_ferretdb_sql_deny_sql_alpha_ferretdb",
+          "status": "PASS",
+          "sqlstate": "42501"
+        },
+        {
+          "test": "sql_beta_ferretdb_sql_deny_postgres",
+          "status": "PASS",
+          "sqlstate": "42501"
+        },
+        {
+          "test": "sql_beta_ferretdb_mongo_own_crud",
+          "status": "PASS"
+        },
+        {
+          "test": "sql_alpha_ferretdb_mongo_cross_read",
+          "status": "SECURITY_FAIL",
+          "result": {
+            "_id": 1,
+            "owner": "beta"
+          }
+        },
+        {
+          "test": "sql_alpha_ferretdb_mongo_cross_write",
+          "status": "SECURITY_FAIL",
+          "result": "intruder-sql_alpha_ferretdb"
+        },
+        {
+          "test": "sql_beta_ferretdb_mongo_cross_read",
+          "status": "SECURITY_FAIL",
+          "result": {
+            "_id": 1,
+            "owner": "alpha"
+          }
+        },
+        {
+          "test": "sql_beta_ferretdb_mongo_cross_write",
+          "status": "SECURITY_FAIL",
+          "result": "intruder-sql_beta_ferretdb"
+        },
+        {
+          "test": "legacy_PLAIN",
+          "status": "INCOMPATIBLE",
+          "code": 334
+        },
+        {
+          "test": "sql_backend_routing",
+          "status": "RECORDED",
+          "logical_tenant_storage": [
+            [
+              "sql_alpha_ferretdb",
+              "system.dbSentinel"
+            ],
+            [
+              "sql_alpha_ferretdb",
+              "synthetic"
+            ],
+            [
+              "sql_beta_ferretdb",
+              "system.dbSentinel"
+            ],
+            [
+              "sql_beta_ferretdb",
+              "synthetic"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "candidate_pods": [
+    {
+      "name": "ferret27-0",
+      "uid": "f864d2b2-0914-4d00-86f1-622768dacd45",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "ferret27",
+          "image": "ghcr.io/ferretdb/ferretdb:2.7.0",
+          "imageID": "sha256:401058574be629b4d5629be3a2e4851aed777837ac3ec2c47f613b80e8a39ea1",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:37:27Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "legacy16-8554d4bb46-h5bkl",
+      "uid": "f01cff55-a655-4cfc-9d10-ba7043f26612",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "legacy16",
+          "image": "ghcr.io/nuvolaris/ferretdb:1.6.0",
+          "imageID": "ghcr.io/nuvolaris/ferretdb@sha256:f26cdb07433c057d428e5605136248b08587d7188adafcecd2c8b075e63d6863",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:45:57Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-ferret-pqstd",
+      "uid": "c3bde778-facf-4973-9d6b-a650f7d0636f",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://cf050d9bbd1d41a7494d2c753ad8570bf6b6d7132ba19a4e6966a2d9493bc8d8",
+              "exitCode": 2,
+              "finishedAt": "2026-10-08T17:37:36Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:37:36Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-ferret18-s4br9",
+      "uid": "987670bc-1fd2-44a0-b2cb-2a7fecb3b5d2",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://a830e7a09cba705142685aa711f2a214fe8dc046b6175bc6aa3bbc4e8b90fe39",
+              "exitCode": 2,
+              "finishedAt": "2026-10-08T17:40:26Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:40:25Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-legacy-r2-h6r2z",
+      "uid": "77cf56f6-601f-4db1-82bd-2a51f0e2daff",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://dd795ab9a02092ba96e3651566c24774fb78e6d07bc9201214f01e4369cdc1d5",
+              "exitCode": 1,
+              "finishedAt": "2026-10-08T17:45:01Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:45:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-legacy-r3-hrt55",
+      "uid": "3f086e7a-ba98-480b-b00f-8fd6913161a6",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://ed569b825b3192a55c5e66ba1658b1746e8c2986fe670ae6b31d92a52f2b9a7c",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:45:59Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:45:58Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-legacy-xqdbl",
+      "uid": "ad6f15ec-f76c-419b-b354-e7addf592817",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://75b33b4d6e2e76a56b881739bece925cfa04104c74478ff85c35173989c2dd99",
+              "exitCode": 1,
+              "finishedAt": "2026-10-08T17:44:17Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:44:01Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-native-2r5vl",
+      "uid": "7e9400e3-94d9-43f1-b8b7-d47b55b69f58",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://3887ad825cf7581f049bf149d139166afe135c48f38125151cd6ebed3a6458b6",
+              "exitCode": 2,
+              "finishedAt": "2026-10-08T17:37:37Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:37:36Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-native-roles-4xhls",
+      "uid": "dfa29f4a-bed2-471e-90fe-330a06d0b9cc",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://f91175f3b2b925d5d7048fa5e67961aa6bb86149102c86baf22a1943eab7b9d0",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:40:02Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:40:02Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-native-roles-strict-gsq4j",
+      "uid": "83f2effd-f903-4026-ab5a-431a9829dee0",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://5ca31059b1488e8d64257954193f0cc1c302b4f1308f0505972b1b205e46da09",
+              "exitCode": 2,
+              "finishedAt": "2026-10-08T17:48:42Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:48:41Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mongo-probe-sql-roles-hh2b2",
+      "uid": "a028f6ad-1019-4c5f-89e0-b49a32eca56d",
+      "phase": "Failed",
+      "containers": [
+        {
+          "name": "probe",
+          "image": "docker.io/miki3421/ops-advanced-ferretdb-client:lab-20261008",
+          "imageID": "sha256:c5ebfc0bfafc34ebb3a360ac66419839138d1aa5470e36fdc802b63d09989125",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://5d60c688f32f689d24705092d50edeab0bd718a2961cfd36b3a1d0dc5b94e159",
+              "exitCode": 2,
+              "finishedAt": "2026-10-08T17:42:03Z",
+              "reason": "Error",
+              "startedAt": "2026-10-08T17:42:02Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "native18-0",
+      "uid": "68cb0119-aefb-4057-b827-093ad6fb8254",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "ferret27-pg18",
+          "image": "ghcr.io/ferretdb/ferretdb:2.7.0",
+          "imageID": "sha256:401058574be629b4d5629be3a2e4851aed777837ac3ec2c47f613b80e8a39ea1",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:40:13Z"
+            }
+          }
+        },
+        {
+          "name": "native18",
+          "image": "ghcr.io/documentdb/documentdb/documentdb-local:pg18-0.117.0",
+          "imageID": "sha256:f438a79e750558555164b2c6c81c8f3f6e7eada35778e9c312a3c38a90538b6e",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:40:13Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "pg17-docdb-0",
+      "uid": "745e8089-74e8-45c7-8fd7-cfa6ac940323",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "pg17-docdb",
+          "image": "ghcr.io/ferretdb/postgres-documentdb:17-0.107.0-ferretdb-2.7.0",
+          "imageID": "sha256:070b393506f26b8c6f0c625f0354d9f78232893aed846dd22bce75c2ec52807e",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:37:31Z"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "ops_pods": [
+    {
+      "name": "controller-0",
+      "uid": "c3f1b936-735c-409f-a2c3-4e46f8b72551",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "controller",
+          "image": "docker.io/apache/openserverless-wsk-controller:0.9.0-incubating.26i21w32-snapshot",
+          "imageID": "docker.io/apache/openserverless-wsk-controller@sha256:30c958540e29dce2c8975c1f777c3e11f10bd20de569facadc89d216087d5fb4",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:40Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "couchdb-0",
+      "uid": "90018967-d5e8-4a3a-8c5c-0fb737750d04",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "couchdb",
+          "image": "docker.io/apache/couchdb:3.5.2",
+          "imageID": "docker.io/apache/couchdb@sha256:c703989c0a370a1a6b179785bcb5b2b5501347bb0219d02d597d0a9107eb8d28",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:31:09Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "couchdb-init-b2ncp",
+      "uid": "0c83dd54-9f04-408c-8b75-9470f7acd435",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "init-couchdb",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:b37ca28c507615d4f47baa80b5beed7c3c308f3d47707dec0e27edc46629d312",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://7faaee6082f5f8554df1479b1e813930591b3db3d4efc8df0c9c3bad23b60d69",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:23:02Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:22:59Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cron-init-29858026-hdw8n",
+      "uid": "c4507a16-a169-4a1c-a8b2-15b89ae1beab",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "cron-init",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://53d171ec1ca01c48d6c0799e0016ac2352d5647134e5c88b1b73450f99a28d29",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:46:02Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:46:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cron-init-29858027-wttgb",
+      "uid": "8e048d9e-ba2a-44a2-a703-2a6c07f10ea8",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "cron-init",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://83573f1780fde09f514c7b9bfe651b6732058a37bc53e37e4a817e464b8322c0",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:47:02Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:47:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cron-init-29858028-7txpk",
+      "uid": "6d327e1a-8ab9-49a1-8593-eb2d940c394c",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "cron-init",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://9ba2f3931c4ae626a4268f649bde3f9c203e95b9a8b690ad43ad8942bfddf900",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:48:02Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:48:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "invoker-0",
+      "uid": "f6657e23-6030-4e43-a66e-3f7e207b51c9",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "invoker",
+          "image": "docker.io/apache/openserverless-wsk-invoker:0.9.0-incubating.26i21w32-snapshot",
+          "imageID": "docker.io/apache/openserverless-wsk-invoker@sha256:5180166bcd57e299a236d60533be03ef16ff756d9742f26c2ac51d0ede47a706",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:39Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "kafka-0",
+      "uid": "957f1c13-6e96-4376-bb4b-815acfcec5bc",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "kafka",
+          "image": "ghcr.io/nuvolaris/kafka:2.3.1.2311011621",
+          "imageID": "ghcr.io/nuvolaris/kafka@sha256:566aa23ad1c28b450da878d7bf4b0ffbd55e2b1c9a6c8b15197c032382e4a508",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:26Z"
+            }
+          }
+        },
+        {
+          "name": "volume-exporter",
+          "image": "ghcr.io/nuvolaris/volume_exporter:1.0.0.2311032017",
+          "imageID": "ghcr.io/nuvolaris/volume_exporter@sha256:60c5ca028e2cf1c86040d1c074595ef3f5b60a878fb7eb01e7870209945afcf3",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:26Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "kubegres-controller-manager-7576cbd895-9blw7",
+      "uid": "f33234d5-7003-423b-aa77-6173151cae3d",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "kube-rbac-proxy",
+          "image": "registry.k8s.io/kubebuilder/kube-rbac-proxy:v0.14.1",
+          "imageID": "registry.k8s.io/kubebuilder/kube-rbac-proxy@sha256:928e64203edad8f1bba23593c7be04f0f8410c6e4feb98d9e9c2d00a8ff59048",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:23:39Z"
+            }
+          }
+        },
+        {
+          "name": "manager",
+          "image": "docker.io/reactivetechio/kubegres:1.18",
+          "imageID": "docker.io/reactivetechio/kubegres@sha256:409413ceab460bb946a3b115eeb08bdf433009b9ab9e93100f2fce83bdef4b05",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:23:39Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-etcd-0",
+      "uid": "db18c53e-f812-4a56-a493-f8d348a082c5",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-etcd",
+          "image": "docker.io/bitnamilegacy/etcd:3.5.17-debian-12-r0",
+          "imageID": "docker.io/bitnamilegacy/etcd@sha256:40da3a0c2b9e38723109d88c64f3506a71b1b313bb48e12bf57b80ff40793eb3",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:25:07Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-etcd-1",
+      "uid": "094f6346-a28b-457d-a5f4-e2b538e6089f",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-etcd",
+          "image": "docker.io/bitnamilegacy/etcd:3.5.17-debian-12-r0",
+          "imageID": "docker.io/bitnamilegacy/etcd@sha256:40da3a0c2b9e38723109d88c64f3506a71b1b313bb48e12bf57b80ff40793eb3",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:25:07Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-etcd-2",
+      "uid": "cb41b21f-a25b-42e1-95a0-2dce7aaa6b90",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-etcd",
+          "image": "docker.io/bitnamilegacy/etcd:3.5.17-debian-12-r0",
+          "imageID": "docker.io/bitnamilegacy/etcd@sha256:40da3a0c2b9e38723109d88c64f3506a71b1b313bb48e12bf57b80ff40793eb3",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:25:08Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-bookie-0",
+      "uid": "92576ffb-84b9-4d20-9071-704606e0bc55",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-bookie",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:26:24Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-bookie-init-g8f8k",
+      "uid": "b3b212d7-e75b-445c-8a1e-e985174b40e9",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-bookie-init",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://3aadf890ceb3014f9db2b9dde6aab453bfb0d7b19da3fec944d70bba9050ea98",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:26:19Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:26:16Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-broker-0",
+      "uid": "b6059011-5da0-4a12-8f92-635da28ffe4e",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-broker",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:26:29Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-proxy-0",
+      "uid": "86c513d5-c2a5-4723-88fc-7b5923ee1557",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-proxy",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:27:12Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-pulsar-init-rgnpk",
+      "uid": "c54eaeda-c376-45b6-81d9-abe4c96a3b1e",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-pulsar-init",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://70030a91ba46241f1dad921661d534a7681fc225380ee87da0e4de85a49f99df",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:26:24Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:26:22Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-recovery-0",
+      "uid": "64c5e28f-335d-4f49-9de0-f5df219974e8",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-recovery",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": true,
+          "restartCount": 1,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:26:24Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-pulsarv3-zookeeper-0",
+      "uid": "cf489f5a-7a13-4857-8794-3b02eeb8c219",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-milvus-pulsarv3-zookeeper",
+          "image": "docker.io/apachepulsar/pulsar:3.0.7",
+          "imageID": "docker.io/apachepulsar/pulsar@sha256:9c9947de139d4dd6c39fab55fac441ba431fc9d742eadc7833d5dcd6d1291720",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:26:15Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-milvus-standalone-84cf6bbdb7-9fsbs",
+      "uid": "f8015edb-4c71-468b-b6b8-db4311fdb9c9",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "standalone",
+          "image": "docker.io/milvusdb/milvus:v2.5.2",
+          "imageID": "docker.io/milvusdb/milvus@sha256:7208f04cfd7e5f919d44bb6ae66d163a3a534d44f9437a86bc0162a9fcd8911e",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:26:15Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-mongodb-0",
+      "uid": "f5535a4e-73eb-4eef-b035-d50e6ae21821",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "ferretdb",
+          "image": "ghcr.io/nuvolaris/ferretdb:1.6.0",
+          "imageID": "ghcr.io/nuvolaris/ferretdb@sha256:f26cdb07433c057d428e5605136248b08587d7188adafcecd2c8b075e63d6863",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:06Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-operator-0",
+      "uid": "f74ea922-0d28-4e39-a821-e86d14dda62e",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-operator",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:41:08Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-postgres-1-0",
+      "uid": "17fe17ac-7915-43e8-8841-acc3c0d71743",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-postgres-1",
+          "image": "sha256:b551e63a5606bdd3127b12a8120c6df8d71c812b29a7faf944b034cb9beb644a",
+          "imageID": "docker.io/pgvector/pgvector@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:23:48Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-postgres-2-0",
+      "uid": "19465719-32fd-4ed2-a70c-e3ff4f78f847",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-postgres-2",
+          "image": "sha256:b551e63a5606bdd3127b12a8120c6df8d71c812b29a7faf944b034cb9beb644a",
+          "imageID": "docker.io/pgvector/pgvector@sha256:2ba9ca5f2e7daa0f0e7723cba1ee9167bab54efd3640516a44ac1a928dd67e7a",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:06Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-prometheus-alertmanager-6bdc9c9d9b-2rm8g",
+      "uid": "4580faa6-f863-4953-a303-60c0983cccca",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "alertmanager",
+          "image": "quay.io/prometheus/alertmanager:v0.25.0",
+          "imageID": "quay.io/prometheus/alertmanager@sha256:fd4d9a3dd1fd0125108417be21be917f19cc76262347086509a0d43f29b80e98",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:57Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-prometheus-kube-state-metrics-7889d6d578-tcs7h",
+      "uid": "a0bea153-161d-494c-99c0-456ca0d6cf75",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "kube-state-metrics",
+          "image": "registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.8.0",
+          "imageID": "registry.k8s.io/kube-state-metrics/kube-state-metrics@sha256:5658d0011a41779ef114f3508143a0e67e4169f64333d0337e731d191ab7edb8",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:59Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-prometheus-server-5866c9dd8-n6jqx",
+      "uid": "90cc34bf-f756-4000-9dcb-26aebbd1254e",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "prometheus-server",
+          "image": "quay.io/prometheus/prometheus:v2.43.1",
+          "imageID": "quay.io/prometheus/prometheus@sha256:3760d0bcb02f439394aa172eaadafbb9e657baff6a995458a6e82fdb38c5b6b5",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:25:02Z"
+            }
+          }
+        },
+        {
+          "name": "prometheus-server-configmap-reload",
+          "image": "quay.io/prometheus-operator/prometheus-config-reloader:v0.65.1",
+          "imageID": "quay.io/prometheus-operator/prometheus-config-reloader@sha256:ca8684fd1e35ae73c9d497ea37cf5216a32e88f1d0e2eeab22247b532f1e508f",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:25:02Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-static-0",
+      "uid": "9c887b38-711f-4f2f-a827-df9cea14239a",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-static",
+          "image": "docker.io/nginxinc/nginx-unprivileged:1.24",
+          "imageID": "docker.io/nginxinc/nginx-unprivileged@sha256:f9dc6a4b27715a9cf0cecf0780c8b84df9a6eb31f18a67ba0d63e4f99cc5c8e9",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:23:38Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-streamer-api-0",
+      "uid": "1621f856-b52c-4076-a09a-f15b1ba4d40d",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-streamer-api",
+          "image": "docker.io/apache/openserverless-streamer:0.9.0-incubating.26i21w32-snapshot",
+          "imageID": "docker.io/apache/openserverless-streamer@sha256:9374345b20d2e9b628f36fd8f4e5606ab42c7a9696927c99b134cef2208fc30f",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:27:47Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "openserverless-system-api-0",
+      "uid": "1ba04f7d-fc02-47ef-9818-930e54651a25",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "openserverless-system-api",
+          "image": "docker.io/apache/openserverless-admin-api:0.9.0-incubating.26i21w32-snapshot",
+          "imageID": "docker.io/apache/openserverless-admin-api@sha256:d884b85518b1d4173be844588f325591fa8ce18ba605bf037ae1e3cd27b1e137",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:30:55Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "preload-runtimes-b2pzc",
+      "uid": "cd3057c5-15c3-443d-83e8-4865266bb451",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "go",
+          "image": "docker.io/apache/openserverless-runtime-go:v1.26-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-go@sha256:94eb04a290cbba70ed51a051ece44e0a6771b017ef230310e431b92879fffcfc",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://4881ed41c4064ff19ca6cdafc08add6959dc5895ba9aa21569e8025a994f4ad3",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:22:46Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:22:46Z"
+            }
+          }
+        },
+        {
+          "name": "java",
+          "image": "docker.io/apache/openserverless-runtime-java:v8-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-java@sha256:19682a175bf6e53816d8b6d203b48dedf63e02a63967be946db7009f51fe2cb0",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://4e0ecadb585ede5075ad8972a843e8f78383b0adfbf9d71844e6276dc0ff5d3b",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:22:46Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:22:46Z"
+            }
+          }
+        },
+        {
+          "name": "nodejs",
+          "image": "docker.io/apache/openserverless-runtime-nodejs:v22-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-nodejs@sha256:614df3085f92ca8e9990dd61b2ded160b1715896c839a315d8801c9820ed9f56",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://1cc4418c55a2a396fa4d4af92f966c5ee66108efef9ab0802bf8954893ede056",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:22:46Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:22:46Z"
+            }
+          }
+        },
+        {
+          "name": "python",
+          "image": "docker.io/apache/openserverless-runtime-python:v3.12-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-python@sha256:418e1be905b98afb393939082be54822b8d5f79f588ff5bb04454cd9146256a6",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://52ccf0fe98c2d8ccde3ff33655ca443ad7167f4d58a3d5bd51b2eae947f51365",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:22:46Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:22:46Z"
+            }
+          }
+        },
+        {
+          "name": "python-sys",
+          "image": "docker.io/apache/openserverless-runtime-python:sys-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-python@sha256:b9611dc736f1ba01dc3e88fd7f30653a2d43fc7277c52d7c6add61f8ad4e7cf6",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://8bccd0685828de5dfee9f3db007bee642eda1822835ebaf8560dc763386be8e8",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T13:22:46Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T13:22:46Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "quota-checker-29858000-mt6l5",
+      "uid": "cee47447-0653-4b1a-a104-4ba5738b3d3e",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "quota-checker",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://b2ef644663f7bf1f347e11c35cd76c46f5cd087282febaa682afffa313e01d83",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:20:04Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:20:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "quota-checker-29858010-j7d4h",
+      "uid": "9f89ff3a-43f0-44e2-ae50-36d308fbacf5",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "quota-checker",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://dc9dcbe27f6c3c7dec86cc910e8a85dcc6eb48578c91960350156e3f57bf56d2",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:30:04Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:30:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "quota-checker-29858020-s8w25",
+      "uid": "2a9e5310-bb14-42b3-8a77-42f8a6456bda",
+      "phase": "Succeeded",
+      "containers": [
+        {
+          "name": "quota-checker",
+          "image": "docker.io/miki3421/ops-advanced-operator:couchdb35-dev",
+          "imageID": "sha256:574b42cde4f0ab17ff53751ceec49f7c04a5a4f3ffeabbfe2ca3f888e5e44f9f",
+          "ready": false,
+          "restartCount": 0,
+          "state": {
+            "terminated": {
+              "containerID": "containerd://d2b27bbe246b32b3330f34b0c6297dda9a64f5fd864b2f0a33b14d4d2ebbcb2a",
+              "exitCode": 0,
+              "finishedAt": "2026-10-08T17:40:05Z",
+              "reason": "Completed",
+              "startedAt": "2026-10-08T17:40:00Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "redis-0",
+      "uid": "124eccd1-580e-4f67-b0a7-e98a76d334dc",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "redis",
+          "image": "docker.io/bitnamilegacy/redis:8.2.1",
+          "imageID": "docker.io/bitnamilegacy/redis@sha256:25bf63f3caf75af4628c0dfcf39859ad1ac8abe135be85e99699f9637b16dc28",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:22:59Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "registry-0",
+      "uid": "94f5ac5b-24f4-43f7-a088-dfe802ed4c8f",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "registry",
+          "image": "docker.io/library/registry:3.0.0",
+          "imageID": "docker.io/library/registry@sha256:6c5666b861f3505b116bb9aa9b25175e71210414bd010d92035ff64018f9457e",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:23:05Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "seaweedfs-0",
+      "uid": "a89efdc4-a30a-43c3-9bc5-ff79b991612a",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "seaweedfs",
+          "image": "docker.io/chrislusf/seaweedfs:3.97",
+          "imageID": "docker.io/chrislusf/seaweedfs@sha256:bb05d66d2963b1cc48073190781c3dd29e2c4c88a2ae2986bf58e38c86d89c6e",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:23:10Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "tika-0",
+      "uid": "49cda587-969e-43be-9d72-4bc4acb730c0",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "tika",
+          "image": "docker.io/apache/tika:3.2.3.0-full",
+          "imageID": "docker.io/apache/tika@sha256:21d8052de04e491ccf66e8680ade4da6f3d453a56d59f740b4167e54167219b7",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:27:52Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "wskinvoker-00-67-prewarm-nodejs22",
+      "uid": "fa7188d7-0dd6-4395-9be8-136d72d2ea1d",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "user-action",
+          "image": "docker.io/apache/openserverless-runtime-nodejs:v22-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-nodejs@sha256:614df3085f92ca8e9990dd61b2ded160b1715896c839a315d8801c9820ed9f56",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:46:02Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "wskinvoker-00-68-prewarm-python312",
+      "uid": "0f863c6b-45b4-45a7-82a0-c4a70d8bfc3e",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "user-action",
+          "image": "docker.io/apache/openserverless-runtime-python:v3.12-26i22h40-snapshot",
+          "imageID": "docker.io/apache/openserverless-runtime-python@sha256:418e1be905b98afb393939082be54822b8d5f79f588ff5bb04454cd9146256a6",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T17:46:02Z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "zookeeper-0",
+      "uid": "9872f0ba-b4ae-4191-8da2-0ef78d395d84",
+      "phase": "Running",
+      "containers": [
+        {
+          "name": "zookeeper",
+          "image": "ghcr.io/nuvolaris/zookeeper:3.4.14",
+          "imageID": "ghcr.io/nuvolaris/zookeeper@sha256:0114f57d4a41be402e0a8dac1aaaad62208bf49ea5ae6cdcde6de42ce01649cd",
+          "ready": true,
+          "restartCount": 0,
+          "state": {
+            "running": {
+              "startedAt": "2026-10-08T13:24:11Z"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "pvcs": [
+    {
+      "name": "data-native18-0",
+      "uid": "2a7f6abc-4a61-4ef7-8968-944c6107109c",
+      "volume": "pvc-2a7f6abc-4a61-4ef7-8968-944c6107109c",
+      "phase": "Bound"
+    },
+    {
+      "name": "data-pg17-docdb-0",
+      "uid": "cfc2ca1d-55e0-49e7-b359-3c30506de613",
+      "volume": "pvc-cfc2ca1d-55e0-49e7-b359-3c30506de613",
+      "phase": "Bound"
+    }
+  ]
+}

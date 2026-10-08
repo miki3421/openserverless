@@ -1,0 +1,15 @@
+PostgreSQL 17.6 (Debian 17.6-2.pgdg12+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+documentdb|0.107-0
+documentdb_core|0.107-0
+pg_cron|1.6
+plpgsql|1.0
+postgis|3.6.0
+rum|1.3
+tsm_system_rows|1.0
+vector|0.8.1
+default_alpha|t|f|f
+default_beta|t|f|f
+scoped_alpha|t|f|f
+scoped_beta|t|f|f
+sql_alpha_ferretdb|f|f|f
+sql_beta_ferretdb|f|f|f

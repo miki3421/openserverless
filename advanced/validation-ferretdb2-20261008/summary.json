@@ -1,0 +1,56 @@
+{
+  "status": "rejected_as_shared_multi_tenant_backend",
+  "reason": "FerretDB 2.7 authenticated SQL and Mongo users access peer data and create administrators through a shared configured backend.",
+  "vm": "ops-advanced-rc7",
+  "namespace": "ops-ferretdb2-lab",
+  "date": "2026-10-08",
+  "full_ops_unchanged": true,
+  "integrated_postgresql": "18.6",
+  "integrated_pgvector": "0.8.6",
+  "integrated_ferretdb": "ghcr.io/nuvolaris/ferretdb:1.6.0",
+  "baseline_legacy_control": {
+    "job": "mongo-probe-legacy-r3",
+    "pass": 6
+  },
+  "ferretdb27_pg17": {
+    "job": "mongo-probe-ferret",
+    "positive_checks": 11,
+    "isolation_failures": 24
+  },
+  "ferretdb27_pg18": {
+    "job": "mongo-probe-ferret18",
+    "positive_checks": 11,
+    "isolation_failures": 24,
+    "officially_paired": false
+  },
+  "ops_sql_roles_control": {
+    "job": "mongo-probe-sql-roles",
+    "positive_checks": 8,
+    "isolation_failures": 4,
+    "plain_authentication": "rejected-code-334"
+  },
+  "documentdb_native": {
+    "mongo_database_scoped_readWrite": "rejected-code-31",
+    "custom_createRole_default_config": "disabled-code-115",
+    "tenant_isolation": "unvalidated"
+  },
+  "vector_coexistence": {
+    "postgresql": "18.6",
+    "documentdb": "0.117-0",
+    "pgvector": "0.8.6",
+    "synthetic_rows": 3,
+    "hnsw_index": "created",
+    "performance_claim": false
+  },
+  "migration_scope": "deferred_until_component_modernization_is_complete",
+  "architecture_decision": "pending_user_choice",
+  "source_commits": {
+    "ferretdb": "0d5eb3343a50b800634cc08ace608bb6f3a3f74b",
+    "documentdb": "28cc012070ce798361ed265251ec159180b7889f",
+    "root_before_this_increment": "d5a901f",
+    "tasks": "427415b",
+    "operator": "d5cfb08"
+  },
+  "publication": "local_only_no_push",
+  "lab_final_state": "Candidate workloads scaled to zero; VM, OPS installation, namespace and PVCs retained."
+}
