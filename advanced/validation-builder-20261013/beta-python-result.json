@@ -1,0 +1,7 @@
+{
+  "dependency": "humanize",
+  "extension_hook": true,
+  "pass": true,
+  "resolved": "/usr/local/lib/python3.12/site-packages/humanize/__init__.py",
+  "version": "4.13.0"
+}

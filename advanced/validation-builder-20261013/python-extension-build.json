@@ -1,0 +1,22 @@
+{
+  "http_status": 200,
+  "source": "openserverless-registry-svc:5000/opsvalbeta:python-extension-base-20261013",
+  "target": "opsvalbeta:python-extension-tested-20261013",
+  "job": "build-opsvalbeta-3d1d516c-67ec-4f05-8b32-fa59df7d9db6",
+  "status": "PASS",
+  "security_context": {
+    "allowPrivilegeEscalation": true,
+    "appArmorProfile": {
+      "type": "Unconfined"
+    },
+    "privileged": false,
+    "procMount": "Unmasked",
+    "runAsGroup": 1000,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "Unconfined"
+    }
+  },
+  "image": "openserverless-registry-svc:5000/opsvalbeta:python-extension-tested-20261013",
+  "digest": "sha256:0ab575590e9a2d8b4a66c2c1715b54a63ab148374a28b05623e5775b4d2f77b2"
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "shell_target",
+    "http_status": 400,
+    "expected": 400
+  },
+  {
+    "name": "source_newline",
+    "http_status": 400,
+    "expected": 400
+  },
+  {
+    "name": "other_tenant",
+    "http_status": 400,
+    "expected": 400
+  },
+  {
+    "name": "opsvalalpha_frontend",
+    "http_status": 200,
+    "expected": 200
+  },
+  {
+    "name": "opsvalbeta_frontend",
+    "http_status": 200,
+    "expected": 200
+  }
+]

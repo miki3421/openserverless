@@ -1,0 +1,22 @@
+{
+  "http_status": 200,
+  "source": "docker.io/apache/openserverless-runtime-nodejs:v22-26i22h40-snapshot",
+  "target": "opsvalbeta:node-builder-reviewed-20261013",
+  "job": "build-opsvalbeta-c5f9f0f6-27f3-46f7-a00c-49c62ac6c152",
+  "status": "PASS",
+  "security_context": {
+    "allowPrivilegeEscalation": true,
+    "appArmorProfile": {
+      "type": "Unconfined"
+    },
+    "privileged": false,
+    "procMount": "Unmasked",
+    "runAsGroup": 1000,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "Unconfined"
+    }
+  },
+  "image": "openserverless-registry-svc:5000/opsvalbeta:node-builder-reviewed-20261013",
+  "digest": "sha256:f1bb2940565323b7e7337b2d0ae61c0d9daaeaa20d93c8eedad247b88daa2a4b"
+}

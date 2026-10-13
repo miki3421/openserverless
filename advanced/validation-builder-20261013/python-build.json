@@ -1,0 +1,22 @@
+{
+  "http_status": 200,
+  "source": "docker.io/apache/openserverless-runtime-python:v3.12-26i22h40-snapshot",
+  "target": "opsvalalpha:python-humanize-20261013",
+  "job": "build-opsvalalpha-3b97a363-bb3a-4d68-a908-8d41a85db507",
+  "status": "PASS",
+  "security_context": {
+    "allowPrivilegeEscalation": true,
+    "appArmorProfile": {
+      "type": "Unconfined"
+    },
+    "privileged": false,
+    "procMount": "Unmasked",
+    "runAsGroup": 1000,
+    "runAsUser": 1000,
+    "seccompProfile": {
+      "type": "Unconfined"
+    }
+  },
+  "image": "openserverless-registry-svc:5000/opsvalalpha:python-humanize-20261013",
+  "digest": "sha256:a2477f7580a86c83a3948ea14dd4b69c6bb8f463a585f59dd9eadaa8311cb9da"
+}

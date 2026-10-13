@@ -17,9 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-# OPS Advanced builder and Python dependencies
+# OPS Advanced builder and custom runtime dependencies
 
-This guide describes the Advanced checkout inspected on 13 October 2026: task commit `427415b`, Admin API commit `b179b0a` plus the local AppArmor correction tested on 12 October. It describes implemented behavior, including incomplete paths; it is not a claim that every image-building workflow is production-ready.
+This guide describes the Advanced builder, including the isolated Kubernetes build worker and Python/Node.js dependency installation validated in the K3s lab on 13 October 2026. Building a runtime and deploying an action are separate operations.
 
 ## Choose a dependency workflow
 
@@ -99,17 +99,17 @@ ops ide deploy example/format_number
 
 The cluster must have the System/Admin API with builder support, permission to create build Jobs and ConfigMaps, a working registry, and registry credentials available to the builder. The developer authenticates using the OPS namespace API key obtained through login. Kubernetes access is only needed for the administrator's Job diagnostics below.
 
-For Python extension builds, the selected source image must implement `/bin/extend` and accept `/tmp/requirements.txt`. The API generates:
+For Python, the builder uses `/bin/extend` when provided by the source image, and otherwise installs `/tmp/requirements.txt` through `python -m pip`. The API generates:
 
 ```dockerfile
 FROM <source>
 COPY requirements.txt /tmp/requirements.txt
 USER root
-RUN /bin/extend
+RUN if [ -x /bin/extend ]; then /bin/extend; else python -m pip install --no-cache-dir -r /tmp/requirements.txt; fi
 USER nobody
 ```
 
-A generic `python:...` image is not sufficient. The inspected runtime source Dockerfiles do not install `/bin/extend`; verify a candidate image before choosing it. The lab's successful image build used a base image without a requirements file and does not prove this extension path works with the standard Python runtime images.
+A generic `python:...` image is not sufficient to serve an OPS action: the image must implement the OpenWhisk runtime protocol. The standard OPS Python 3.12 image was successfully extended in the lab with `humanize==4.13.0`, then deployed as an action with no virtualenv in its ZIP. Node.js likewise preserves `/bin/extend` when present. Otherwise it installs dependencies in `/opt/ops-deps` and links them into `/app/node_modules`, where the standard OPS runtime resolves action imports. An existing `/app/node_modules` makes this fallback fail rather than overwrite it. Other languages require `/bin/extend`. Rebuild and deploy the updated Admin API before using these paths.
 
 ## Builder API
 
@@ -206,15 +206,39 @@ Push and pull may use different network endpoints, but both must reach the same 
 
 | Symptom or check | Meaning / action |
 | --- | --- |
-| RootlessKit `failed to share mount point: /: permission denied` | The lab's default AppArmor profile blocked startup. The local Admin API patch sets `appArmorProfile: Unconfined` only on BuildKit, retaining UID/GID 1000 and `privileged=false`. This removes that AppArmor restriction and needs security review. The structured field requires Kubernetes 1.30 or later. |
+| RootlessKit startup or `/proc` mount failure | Verify the worker user-namespace prerequisites below. Do not disable the process sandbox to work around it. |
 | Valid base-image build | Passed, including push to the private registry |
 | Invalid target, source newline, another tenant's target | Rejected with HTTP 400 in the lab |
-| Runtime `ErrImagePull` for `openserverless-registry-svc:5000/...` | Still open in the K3s lab: the node cannot resolve the Service hostname. Registry pull endpoint and credentials must be aligned before custom-runtime deployment can be considered complete. |
-| `/bin/extend: not found` | Source image does not implement the API's extension contract |
+| Runtime `ErrImagePull` for `openserverless-registry-svc:5000/...` | Resolved in the single-node K3s lab by the scoped mirror below; configure every action-running node. Authenticated pull and custom action execution passed. |
+| `/bin/extend: not found` | Python and Node.js have standard-runtime fallbacks; other languages require an extension-aware source image. |
+| Image digest disappears from an action pull | The current OpenWhisk `ImageName.fromString` parser accepts a digest but discards it. Use a unique tag for this tested workflow and record/verify its digest separately. Immutable digest support remains an open core issue. |
 | HTTP 401 | Check the OPS API key for API authentication, or registry credentials if the error is in build/pull logs |
 | Package imports fail after ZIP deployment | Check packaged dependencies, Python/architecture compatibility and selected runtime |
 
-The API uses `moby/buildkit:master-rootless`, a moving image tag. No reproducibility guarantee is implied by these tests. The AppArmor correction is local and not yet committed/pushed.
+## Build worker isolation and prerequisites
+
+The worker pins BuildKit by digest, runs with UID/GID 1000 and `privileged=false`, disables Kubernetes service-account token mounting, and requests a private Pod user namespace (`hostUsers: false`). BuildKit uses `noProcessSandbox = false`: dependency commands retain their own process sandbox.
+
+AppArmor and seccomp are Unconfined for this dedicated worker, and `procMount: Unmasked` permits mounting proc inside the private user namespace. These settings are not a claim of protection against every kernel/container vulnerability. Validate the actual persisted Pod settings and node UID mapping before enabling the builder on another cluster; older API servers may discard unsupported fields. This configuration was tested on K3s `v1.37.1+k3s1`, with working Kubernetes/containerd user namespaces. Compatibility with older clusters and Docker+Kind has not been established.
+
+Read-only subordinate UID/GID mappings use `user:1:999` and `user:1001:64535`. Child root maps to Pod ID 1000; subordinate ranges exclude Pod root and ID 1000. Build IDs 0–65534 are representable, including `nobody`; images requiring UID/GID 65535 or larger are unsupported. No host UID/GID configuration is changed.
+
+Both the Admin API and task BuildKit configuration must be updated together. Do not retain the previous `noProcessSandbox=true` lab configuration. The Admin API image used for validation was built and imported locally; pushing these source commits does not publish a ready-made container image.
+
+## K3s internal registry mirror
+
+For the internal registry using NodePort 32000, merge this exact registry entry into `/etc/rancher/k3s/registries.yaml` on every node running actions, preserving existing registry settings:
+
+```yaml
+mirrors:
+  "openserverless-registry-svc:5000":
+    endpoint:
+      - "http://127.0.0.1:32000"
+```
+
+Restart `k3s` (server) or `k3s-agent` (agent) to load the configuration. This is an explicit node configuration step, not yet part of `ops cloud k3s install`. It requires working loopback NodePort access. Credentials remain in `registry-pull-secret`, referenced by the action Pod; no node-level credentials or wildcard mirror were added.
+
+In the 13 October lab check, private pulls with the Secret succeeded, private pulls without credentials failed, and public Docker Hub pulls still worked. The mirror is specific to the OPS internal registry and does not redirect public images. See [K3s private registry configuration](https://docs.k3s.io/installation/private-registry).
 
 ## Cleanup
 
@@ -229,3 +253,7 @@ The repository's `task builder:send` helper depends on `cleanjobs`, which search
 - [Python packaging task](../oplugins/ide/python/opsfile.yml)
 - [Local dependency installation](../oplugins/ide/python/build-venv.sh)
 - [IDE deployment](../oplugins/ide/deploy/deploy.js)
+
+## Additive Beta regression scenarios
+
+The [Python and Node.js fixtures](../advanced/lab/builder/README.md) exercise image-backed dependencies through separate build, deploy and invocation steps. Existing Alpha/Beta actions are unchanged.
