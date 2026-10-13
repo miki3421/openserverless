@@ -21,6 +21,11 @@ under the License.
 
 Personal distribution under the miki3421 account, based on Apache OpenServerless 0.9.0. It is not an Apache release. Original licensing, NOTICE and attribution are retained.
 
+## Usage guides
+
+- [Builder and Python dependencies](docs/BUILDER_GUIDE.md): action packaging, image-builder API, registry requirements, and current lab limitations.
+- [SSO configuration](docs/sso_configuration_guide.md): every public `ops config sso` option, Keycloak examples, login, rollout, and disable behavior.
+
 ## Repository isolation
 
 The root repository and all nine submodules use personal forks and the `advanced` branch. Gitlinks pin exact commits; `.gitmodules` points only to miki3421 repositories. `advanced/baseline.json` records the upstream starting commits.
