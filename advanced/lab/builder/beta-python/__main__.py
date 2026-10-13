@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-#--docker openserverless-registry-svc:5000/opsvalbeta:python-extension-tested-20261013
+#--docker openserverless-registry-svc:5000/opsvalbeta:python-extension-base-20261013
 #--web false
 from pathlib import Path
 import humanize

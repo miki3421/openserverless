@@ -1,0 +1,17 @@
+{
+  "anonymous": {
+    "http": 401
+  },
+  "alpha": {
+    "http": 404
+  },
+  "beta": {
+    "http": 200,
+    "fields": [
+      "image",
+      "job_name",
+      "state"
+    ],
+    "state": "succeeded"
+  }
+}

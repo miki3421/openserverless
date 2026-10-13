@@ -1,0 +1,55 @@
+{
+  "application": "ops-validation-app",
+  "version": "V0.1.0",
+  "suite": "functional",
+  "backend_modes": [
+    "live"
+  ],
+  "live_validation": true,
+  "cluster_accepted": false,
+  "checks": [
+    {
+      "test": "alpha_owner_workflow",
+      "status": "PASS"
+    },
+    {
+      "test": "alpha_persistence_read",
+      "status": "PASS"
+    },
+    {
+      "test": "beta_owner_workflow",
+      "status": "PASS"
+    },
+    {
+      "test": "beta_persistence_read",
+      "status": "PASS"
+    }
+  ],
+  "performance": {},
+  "peer_load": {
+    "status": "NOT_RUN"
+  },
+  "unverified_gates": [
+    "direct_backend_isolation",
+    "cron",
+    "streamer",
+    "sso",
+    "registry",
+    "infrastructure",
+    "independent_security"
+  ],
+  "fixtures": {
+    "alpha": {
+      "operation": "exercise",
+      "run_id": "opsval-8aacd8a8d505"
+    },
+    "beta": {
+      "operation": "exercise",
+      "run_id": "opsval-73214d73f8f4"
+    }
+  },
+  "target_fingerprints": {
+    "alpha": "bad9b9f9acd2140e4bd5aaa9fed2c94790cba6287ea83265e88841ba9a23ceaf",
+    "beta": "7fdbf2540d18d7892a9e54b2631c78d92feae28fa1ffe9feac6c7bfe9271eb12"
+  }
+}

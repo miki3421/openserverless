@@ -19,17 +19,52 @@ under the License.
 
 # OPS Advanced builder and custom runtime dependencies
 
-This guide describes the Advanced builder, including the isolated Kubernetes build worker and Python/Node.js dependency installation validated in the K3s lab on 13 October 2026. Building a runtime and deploying an action are separate operations.
+This guide describes the Advanced builder, including the isolated Kubernetes build worker and Python/Node.js dependency installation validated in the K3s lab on 13 October 2026. `ops ide deploy` automatically builds and monitors Python and Node.js custom runtimes before updating dependency-bearing actions.
 
-## Choose a dependency workflow
+## Automatic deployment
 
-| Need | Mechanism | Result |
-| --- | --- | --- |
-| Add Python packages to an action | `requirements.txt` beside `__main__.py`, then `ops ide deploy` | Dependencies packaged in the action ZIP; the base runtime image stays the same |
-| Share preinstalled dependencies in a custom runtime | Builder REST API, then an action using `#--docker` | A new registry image, followed by a separate action deployment |
-| Install OS packages or use a custom Dockerfile | An independently managed image build | Not supported by the current builder JSON API |
+Developers use two commands from the application directory:
 
-The current Advanced `ops ide deploy` implementation does **not** automatically call the builder REST API. A `#--docker` directive selects an existing image; it does not build it. Other forks may implement additional automation.
+```sh
+ops ide login
+ops ide deploy
+```
+
+Keep only `OPS_USER`, `OPS_APIHOST`, and `OPS_PASSWORD` in the private application
+`.env`. The deployer uses the active login profile for authenticated builder API
+requests. Developers do not need Kubernetes credentials.
+
+A `requirements.txt` beside `__main__.py`, or a `package.json` with production
+`dependencies` beside `index.js`, triggers a build. `--kind` selects the base from
+OPS's runtime catalog. `--docker` selects an explicit **base image** when a
+manifest is present; without a dependency manifest it selects an existing image.
+Put each runtime directive on its own comment line.
+
+OPS submits the dependency manifest, monitors the tenant-owned job, waits for
+its image push, packages the action source, then updates the action with the
+resulting image. Build failures and monitoring failures return a nonzero exit
+code before updating that action. A full project deployment is sequential, not
+transactional: actions already deployed before a later failure remain updated.
+
+Successful build receipts are cached locally by API host, tenant, runtime and
+manifest content. Reuse requires the authenticated API to confirm the job still
+exists and succeeded. Removing the receipt directory
+`$OPS_TMP/ide-runtime-cache` forces a new build. The cache does not detect a
+registry image deleted independently of its retained successful job; invalidate
+receipts after registry cleanup. Pin dependency versions and base image tags;
+unchanged manifests do not automatically refresh floating versions.
+
+The server limits jobs to 15 minutes. The client displays state changes and
+periodic progress. Interrupting the client does not cancel the server job.
+Python virtualenvs and Node node_modules are excluded from the new source ZIP,
+as are dependency manifests and `.env` files. Dependencies live in the image.
+Node lockfiles are currently rejected rather than silently ignored; local path
+dependencies, arbitrary Dockerfiles and OS package installation are not supported
+by this manifest-only API. Other language workflows retain their existing behavior.
+
+The cluster must run the matching Advanced Admin API (including build status),
+have its builder worker prerequisites and registry configured, and allow runtime
+image pulls. See the administrator sections below.
 
 ## Standard Python action: working example
 
@@ -86,14 +121,9 @@ Expected result:
 {"formatted": "1,234,567"}
 ```
 
-The task creates a local `virtualenv` using `uv` and `/usr/bin/python3`, installs the requirements, packages that environment with the Python source, and updates the action. The runtime loads the packaged dependencies. An equivalent action passed in the Advanced lab with `humanize==4.13.0`; the temporary action was removed afterwards.
-
-Use a development environment compatible with the selected runtime's Python version, architecture and OS, especially for packages with native extensions. The pure-Python test above does not validate every compiled package. If removing dependencies or changing Python versions, clean the action environment before redeploying:
-
-```bash
-ops ide util clean A=example/format_number
-ops ide deploy example/format_number
-```
+The deployer builds the selected runtime with `humanize`, waits for a successful
+push, and deploys the action source using that image. No local Python environment
+is required. The image must implement the OpenWhisk runtime protocol.
 
 ## Image builder prerequisites
 
@@ -168,7 +198,12 @@ with urllib.request.urlopen(request, timeout=180) as response:
 
 A successful response contains `status`, `message`, `id` and `job_name` at the top level. HTTP 200 means the build was initiated, **not** that the image has been built and pushed.
 
-## Observe completion and deploy the result
+## Administrator diagnostics for manual API builds
+
+The authenticated `GET /system/api/v1/build/status/<job_name>` endpoint returns
+only `job_name`, `state` (`pending`, `running`, `failed`, or `succeeded`) and
+`image`. Missing jobs and jobs belonging to another tenant both return 404;
+anonymous requests return 401. This is the endpoint used by `ops ide deploy`.
 
 An administrator can inspect the returned Job name:
 
@@ -192,7 +227,7 @@ def main(args):
     return {"formatted": humanize.intcomma(1234567)}
 ```
 
-Use the real, verified pull reference in place of the example. Then run `ops ide deploy example/format_number` and invoke the action. Avoid also shipping the same dependencies in an action virtualenv unless intentional; duplicate versions can change import behavior. A custom image must preserve the OpenWhisk runtime protocol, not merely contain Python.
+For this manual-image workflow, omit the action dependency manifest to avoid triggering another build. Use the real, verified pull reference in place of the example. Then run `ops ide deploy example/format_number` and invoke the action. Avoid also shipping the same dependencies in an action virtualenv unless intentional; duplicate versions can change import behavior. A custom image must preserve the OpenWhisk runtime protocol, not merely contain Python.
 
 ## Registry resolution and credentials
 
@@ -256,4 +291,4 @@ The repository's `task builder:send` helper depends on `cleanjobs`, which search
 
 ## Additive Beta regression scenarios
 
-The [Python and Node.js fixtures](../advanced/lab/builder/README.md) exercise image-backed dependencies through separate build, deploy and invocation steps. Existing Alpha/Beta actions are unchanged.
+The [Python and Node.js fixtures](../advanced/lab/builder/README.md) exercise automatic image building during deployment. Existing Alpha/Beta application actions are unchanged.

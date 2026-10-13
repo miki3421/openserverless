@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-//--docker openserverless-registry-svc:5000/opsvalbeta:node-builder-reviewed-20261013
+//--kind nodejs:22
 //--web false
 const isNumber = require('is-number');
 function main() {
