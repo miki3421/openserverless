@@ -291,3 +291,38 @@ Evidenze redatte in `advanced/validation-ferretdb2-20261008/`: log dei probe, ve
 La suite completa OPS con FerretDB 2.x e i benchmark non vengono eseguiti perché manca il prerequisito di isolamento. Si deve scegliere prima l'architettura: valutare un MongoDB nativo con ruoli per database, oppure studiare un backend PostgreSQL con istanze realmente isolate per utente e quantificarne i costi. Database SQL distinti sul medesimo cluster, da soli, non correggono il gateway condiviso. Gli eventuali cambi di architettura richiedono una scelta dell'utente. Migrazioni e `ops setup cluster --upgrade` restano rinviati al termine della modernizzazione.
 
 A prova conclusa i candidati sono scalati a zero: VM, namespace, Secret e PVC del test sono conservati. L'installazione OPS rimane attiva e tutti i suoi pod Running risultano Ready. La fotografia finale è `advanced/validation-ferretdb2-20261008/final-state.json`.
+
+## Pending performance review: Slim profile
+
+After selecting the final Advanced component combination, profile and benchmark
+the Slim deployment with unchanged Alpha/Beta application code and matched lab
+resources. Verify the actual messaging path and deployed components first; do not
+assume that the full-profile Kafka dispatcher finding applies to Slim. Measure
+end-to-end latency, runtime time, throughput, cold starts and tail latency before
+proposing Slim-specific optimizations. This verification is deferred.
+
+## Validated local development state (2026-10-15)
+
+MongoDB native 9.0.2 is integrated with tenant provisioning, password changes,
+quota enforcement and tenant deletion. The `instance-update` task now uses the
+current instance renderer; `ops ide login` propagates login failures. Existing
+Alpha and Beta application code was retained during compatibility validation.
+
+The controller templates set a minimum of four Kafka dispatcher threads, while
+retaining CPU-based scaling and explicit administrator JVM option overrides.
+On the K3s Advanced lab, the controller retained its one-CPU limit. A three-round
+comparison produced 720 successful measured requests across baseline/Advanced,
+Alpha/Beta and concurrency levels one/four. Advanced median response times were
+160/163 ms at concurrency one and 211/217 ms at concurrency four. All 15
+application regression checks passed. Concurrency-four p95 remained around
+1.8 seconds; this remaining tail latency is not resolved by this change.
+
+The operator image selected by the task configuration is
+`docker.io/miki3421/ops-advanced-operator:controller-kafka-20261015`. It is a local
+development image, built and imported into the Advanced lab; it has **not been
+published to a registry**. Checking out these sources alone does not make this
+image downloadable: build/import the operator image before deploying on another
+server. No release artifacts are published by this source update.
+
+SeaweedFS remains at 3.97. Its modernization is under investigation and is not
+included in this validated development state.
