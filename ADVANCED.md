@@ -403,3 +403,36 @@ scope remain unchanged. The baseline VM was not modified.
 Alpha/Beta retain their source, deployed action code, parameters, and frontend
 content. The full application suite passed on the shared service, along with
 the direct S3 regression checks. See [validation details](docs/SEAWEEDFS_448_VALIDATION.md).
+
+## Milvus 3.0.2 local candidate — 2026-10-16
+
+The Advanced lab now runs a fresh Milvus 3.0.2 standalone installation with
+embedded Woodpecker on its persistent local WAL and SeaweedFS 4.48 for vector
+objects. The old Milvus volume and metadata remain preserved. The selected
+operator image is `miki3421/ops-advanced-operator:milvus-ready-20261016-r4`, built
+and imported locally only. The sources are published only on the personal
+`miki3421` branches named `advanced`; the images have not been published.
+
+Pulsar was confirmed unnecessary by restarting the old engine and passing the
+application suite with all five Pulsar StatefulSets stopped. Their former
+working set was 5.80 GiB. New full/slim manifests exclude Pulsar resources.
+
+Alpha/Beta remain unchanged and pass all 15 checks on the new shared instance,
+including after restart/recovery. Direct backend checks pass 23/23, S3
+regressions 12/12, and relevant operator tests 29/29. A startup recovery gate
+prevents premature readiness and binds its cached success to the container's
+process generation, without flapping during normal collection creation.
+
+The selected local image is an Advanced derivative of 3.0.2: a narrow Go-server
+patch uses the existing Strong execution path for Bounded reads with zero grace.
+Native libraries, authentication, authorization and storage formats are unchanged.
+The operator contains its build recipe, patch and focused upstream regression
+tests under `images/milvus/`. The image is pinned by its imported digest in the
+task catalog and full/slim manifests; it has not been published.
+
+With a 10 ms visibility interval and 1 ms local-WAL sync interval, 100-request
+Alpha/Beta runs at concurrency four measured p50 around 250–330 ms with zero
+errors, versus about 600 ms in the initial stock-3.0.2 configuration. The report
+retains every final repeat, including the run with an external readiness observer.
+The older 2.5.2 default Bounded run permits stale reads and is not an equal-freshness
+comparison. See [Milvus validation details](docs/MILVUS_302_VALIDATION.md).
