@@ -317,12 +317,89 @@ Alpha/Beta and concurrency levels one/four. Advanced median response times were
 application regression checks passed. Concurrency-four p95 remained around
 1.8 seconds; this remaining tail latency is not resolved by this change.
 
-The operator image selected by the task configuration is
+The operator image used for that controller validation was
 `docker.io/miki3421/ops-advanced-operator:controller-kafka-20261015`. It is a local
 development image, built and imported into the Advanced lab; it has **not been
 published to a registry**. Checking out these sources alone does not make this
 image downloadable: build/import the operator image before deploying on another
 server. No release artifacts are published by this source update.
 
-SeaweedFS remains at 3.97. Its modernization is under investigation and is not
-included in this validated development state.
+At the end of the controller validation, the shared SeaweedFS service remained
+at 3.97. The following local candidate is a separate validation stage.
+
+
+## SeaweedFS 4.48 candidate — local validation, 2026-10-16
+
+The local task image catalog and operator manifest now select SeaweedFS 4.48,
+pinned to digest `sha256:4e61d15fd35994cb1e43e1e553dff106794841fd9a99ade2fc8c8bfce4d7872d`.
+The operator development image is
+`docker.io/miki3421/ops-advanced-operator:seaweedfs-20261016`; it is built locally,
+not published. Source checkout alone does not make this image downloadable.
+
+Seaweed shell operations now use the command result rather than nonempty stdout:
+4.48 quota/deletion commands may succeed without stdout. Errors and timeouts
+still stop provisioning/revocation. Command inputs and responses containing S3
+credentials are not logged. New startup/readiness probes wait for the filer
+HTTP listener and the S3 TCP listener; these are availability checks, not proof
+that every backend operation has completed recovery.
+
+Automatic changes of the image on an existing SeaweedFS StatefulSet are refused.
+An orphaned SeaweedFS PVC is also refused. Fresh installations are supported;
+production migration/`cluster --upgrade` remains deferred. Do not remove these
+guards to adopt a 3.97 volume implicitly.
+
+Validation used a separate pod and fresh PVC in the Advanced K3s VM. The baseline
+VM and the shared 3.97 service were not upgraded. Alpha/Beta temporarily pointed
+only their S3 connection parameters to the candidate, then the original
+parameters were restored. Their source hashes remained unchanged. PostgreSQL,
+MongoDB and Redis continued using the existing Advanced services. A second
+combined run pointed the apps to an isolated Milvus 2.5.2 instance backed by the
+4.48 candidate as well. Its metadata uses a separate etcd prefix and its local
+storage uses a fresh PVC; the shared Milvus instance was not changed. OPS's
+existing Milvus administration client provisioned the same tenant identities
+and database permissions in this isolated instance.
+
+Results: 15 operator unit tests, 12 direct S3 access/lifecycle checks, and all 15
+Alpha/Beta application checks passed. Coverage includes owner read/write,
+cross-tenant read/write/copy denial, public-web reads only, anonymous private
+access/list/write denial, revocation, preserving another public bucket's grant,
+and recreating a revoked bucket as private. Single-part and 12 MiB multipart
+uploads were read back byte-for-byte. Four frontend assets per tenant were
+copied unchanged to candidate web buckets and verified through anonymous S3 GET.
+
+The application suite also passed after candidate pod recreation without
+reprovisioning the tenant credentials. A deliberately overlapping restart run
+had initial workflow failures during downtime; these are retained in the lab
+report and are not counted as passes. The subsequent available-service run
+passed. This is a single-instance storage service, not a zero-downtime test.
+
+The microbenchmark is exploratory (seven measured samples per object size), not
+a statistically robust application performance comparison. The combined Alpha/Beta S3+Milvus run also passed all 15 checks. A dedicated
+Milvus probe inserted/flushed 100 vectors, verified nearest-neighbor search and
+scalar query results, and confirmed vector segment objects existed on 4.48. After Milvus pod recreation,
+the same 100 vectors and search result were verified without re-insertion.
+A complete unattended OPS cluster installation from scratch was not repeated;
+at that stage the validated candidate remained separate from shared storage.
+The subsequent lab promotion is documented below. No independent security
+review or production migration validation is claimed by these tests.
+
+Local evidence: `/root/ops-update-sso/ops-advanced/seaweedfs-20261016/`.
+
+
+## SeaweedFS 4.48 promoted to the Advanced lab — 2026-10-16
+
+The shared Advanced S3 service now runs 4.48 at the pinned digest above, including
+the storage used by the existing Milvus instance. The task catalog selects
+`docker.io/miki3421/ops-advanced-operator:seaweedfs-20261016-r2`. That operator
+image was built and imported into the lab, **not published to a registry**.
+
+Promotion used a fresh PVC after stopping the lab writers, with an explicit
+logical copy of 1,399 objects from nine buckets. Every restored object was
+verified by SHA-256 and the six original identities retained their credentials
+and action grants. The old PV was retained for recovery. This was a lab operation,
+not an automatic in-place data upgrade; the source guards and deferred migration
+scope remain unchanged. The baseline VM was not modified.
+
+Alpha/Beta retain their source, deployed action code, parameters, and frontend
+content. The full application suite passed on the shared service, along with
+the direct S3 regression checks. See [validation details](docs/SEAWEEDFS_448_VALIDATION.md).
