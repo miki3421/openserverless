@@ -181,6 +181,14 @@ Implementation sources to inspect and pin to exact branches/commits:
 
 Review `ops cloud k3s install`: version selection, installation options, containerd registry configuration, repeat execution, upgrade behavior and isolation from existing workloads.
 
+The scoped internal-registry portion of this review completed on 17 October
+2026. `ops cloud k3s create` now installs the exact K3s mirror automatically,
+and `ops cloud k3s registry` handles an existing single-server cluster without
+overwriting custom registry configuration. Builder and public/private pull
+evidence is recorded in
+`advanced/validation-registry-builder-20261017/REPORT.md`. General K3s upgrade
+behavior and multi-node orchestration remain separate work.
+
 Review the automatic image build performed by `ops ide deploy` across the task and admin-api forks:
 - Trace the annotations written and consumed by both components, including missing values, defaults, precedence and backward compatibility.
 - Verify compatibility with the Docker + Kind production topology as a separate test matrix from native K3s + containerd. Production compatibility is a requirement, not authorization to mutate production.

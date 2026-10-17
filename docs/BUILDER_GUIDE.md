@@ -262,7 +262,14 @@ Both the Admin API and task BuildKit configuration must be updated together. Do 
 
 ## K3s internal registry mirror
 
-For the internal registry using NodePort 32000, merge this exact registry entry into `/etc/rancher/k3s/registries.yaml` on every node running actions, preserving existing registry settings:
+`ops cloud k3s create <server> [<user>]` now installs the scoped mirror before
+K3s starts. For an existing single-server installation, run:
+
+```sh
+ops cloud k3s registry <server> [<user>]
+```
+
+The command writes this exact entry only when the file is absent or empty:
 
 ```yaml
 mirrors:
@@ -271,9 +278,21 @@ mirrors:
       - "http://127.0.0.1:32000"
 ```
 
-Restart `k3s` (server) or `k3s-agent` (agent) to load the configuration. This is an explicit node configuration step, not yet part of `ops cloud k3s install`. It requires working loopback NodePort access. Credentials remain in `registry-pull-secret`, referenced by the action Pod; no node-level credentials or wildcard mirror were added.
+On an existing server the command restarts K3s after installing the file. It is
+idempotent for the exact OPS-managed content and refuses to replace a non-empty
+custom `registries.yaml`. Merge the entry manually when other registry settings
+must be preserved. Configure every action-running node in a multi-node cluster;
+the current `ops cloud k3s` task manages one server.
 
-In the 13 October lab check, private pulls with the Secret succeeded, private pulls without credentials failed, and public Docker Hub pulls still worked. The mirror is specific to the OPS internal registry and does not redirect public images. See [K3s private registry configuration](https://docs.k3s.io/installation/private-registry).
+The mirror requires working loopback NodePort access. Credentials remain in
+`registry-pull-secret`, referenced by the action Pod; no node-level credentials
+or wildcard mirror are added.
+
+The 17 October lab retest confirmed authenticated private pulls, rejection of
+anonymous private pulls, and an unchanged public Docker Hub pull. Fresh Node.js
+and Python builds were pushed and then executed through `ops ide deploy`. The
+mirror is specific to the OPS internal registry and does not redirect public
+images. See [K3s private registry configuration](https://docs.k3s.io/installation/private-registry).
 
 ## Cleanup
 
