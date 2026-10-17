@@ -436,3 +436,29 @@ errors, versus about 600 ms in the initial stock-3.0.2 configuration. The report
 retains every final repeat, including the run with an external readiness observer.
 The older 2.5.2 default Bounded run permits stale reads and is not an equal-freshness
 comparison. See [Milvus validation details](docs/MILVUS_302_VALIDATION.md).
+
+
+## etcd 3.7.2 local validation — 2026-10-16
+
+The Advanced K3s lab now runs three native etcd 3.7.2 members with verified
+client/peer TLS and installation-specific JWT material. Milvus 3.0.2 connects
+over mTLS; the health gate requires both enabled authentication and healthy
+quorum. The local derivative adds only that probe to the pinned upstream image.
+The Bitnami shell-based bootstrap is replaced by native configuration and TLS
+administration; stale auth-store tokens are renewed once with the same identity.
+
+This is a fresh lab installation with new etcd/Milvus PVCs and disjoint metadata
+prefixes. The previous 3.5.17 volumes and Milvus volume remain preserved and
+unmounted. Automatic image, membership, credentials or storage reuse is refused;
+no migration or upgrade command is introduced.
+
+Both post-install Alpha/Beta suites passed 15/15 checks (100 requests per tenant,
+zero errors), including after installed etcd/Milvus restarts. Application sources,
+actions, parameters and frontends are unchanged. Direct etcd checks passed 21/21,
+Milvus tenant lifecycle/isolation 23/23, S3 regression 12/12, Python unit tests 47/47
+and all six Go probe scenarios. The baseline remains unchanged.
+
+Source and catalog changes are published only to the personal `advanced` branches.
+The tested etcd and operator images remain imported locally and unpublished.
+See [etcd validation details](docs/ETCD_372_VALIDATION.md) for versions, evidence,
+restart checks, certificate lifetime limits and reproducible image references.
