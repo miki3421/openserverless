@@ -462,3 +462,53 @@ Source and catalog changes are published only to the personal `advanced` branche
 The tested etcd and operator images remain imported locally and unpublished.
 See [etcd validation details](docs/ETCD_372_VALIDATION.md) for versions, evidence,
 restart checks, certificate lifetime limits and reproducible image references.
+
+
+## Redis 8.10.2 local validation — 2026-10-17
+
+The Advanced lab now runs the official native Redis 8.10.2 image pinned by digest,
+using a fresh `/data` PVC. The old Bitnami 8.2.1 volume remains Bound and unmounted.
+Service identity is preserved; the NodePort is removed. The administrator is a
+separate identity, the default user is disabled, and ACLs are saved on the volume.
+AOF with every-second fsync and the RDB schedule are enabled in the full lab.
+
+Tenant data and Pub/Sub channels are restricted by prefix. Administrative/global
+commands are denied, overlapping prefixes and concurrent ownership are refused,
+and restoring writes after a quota block preserves the restricted policy. Deleting
+credentials retains data; a later identity cannot silently inherit the orphaned
+prefix. The Redis quota MiB conversion and missing-measurement handling are fixed.
+
+All 69 live Redis checks passed on both candidate and installed services, including
+Alpha/Beta's original bindings. Normal and SIGKILL restarts preserved candidate
+data, read-only ACLs and revoked identities without reprovisioning. Both complete
+post-install application suites passed 15/15 checks, at 100 requests per tenant
+and zero errors, including after the installed Redis restart. The prior fixtures
+also passed inspection for all five services after restart. The actual quota
+CronJob image was updated and a one-off job completed. Python tests passed 66/66.
+
+Alpha/Beta were unchanged during the initial validation above. A subsequent
+user-authorized Lua extension now passes 84/84 Lua checks and 16/16 quota-policy
+checks on Advanced, including cached scripts with runtime-computed keys.
+The Advanced operator r6 allows only ordinary Lua execution/cache commands, retaining
+key/channel isolation and denying global administration. Baseline components
+remain unchanged; the new app tests expose its broad global command grants and
+Lua being disabled under quota. Both original ACLs were restored exactly.
+The Redis source and catalog changes are published only to the personal
+`advanced` branches. The tested operator image remains installed in the lab and
+is not anonymously pullable. See [Redis validation details](docs/REDIS_810_VALIDATION.md) for exact
+versions, the stricter client command contract, persistence limits and evidence.
+
+The later user-authorized Redis tenant-ACL backport also hardens the 0.9.0 lab
+without upgrading its Redis engine. Both clusters now use the same restricted
+policy while retaining ordinary Lua execution. The 0.9.0 backport preserves
+existing valid credentials during reconciliation. Details and pre-fix versus
+post-fix evidence are in the Redis validation document. The separate 0.9.0
+backport changes remain local.
+
+A focused Codex Security review using Daybreak Blue covered all nine changed
+runtime files plus the build and test artifacts. It found no reportable issue in
+tenant ACL isolation, Lua containment, quota transitions, credential handling,
+persistent lifecycle, or pod/service hardening. Current-code checks passed 20/20
+inside the deployed operator and 40/40 against the live ACL. The sealed review is
+scan `21d8c4c8-6b73-45c7-95aa-03cb296b4e69`; network policy and Kubernetes RBAC
+remain outside this Redis-scoped review.
