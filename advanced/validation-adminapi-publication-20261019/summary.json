@@ -1,0 +1,8 @@
+{
+  "builder_fresh_builds": 2,
+  "builder_invocations": 2,
+  "builder_cache_reuse": 2,
+  "live_http_checks": 12,
+  "source_files_unchanged": 144,
+  "all_passed": true
+}

@@ -258,7 +258,19 @@ AppArmor and seccomp are Unconfined for this dedicated worker, and `procMount: U
 
 Read-only subordinate UID/GID mappings use `user:1:999` and `user:1001:64535`. Child root maps to Pod ID 1000; subordinate ranges exclude Pod root and ID 1000. Build IDs 0–65534 are representable, including `nobody`; images requiring UID/GID 65535 or larger are unsupported. No host UID/GID configuration is changed.
 
-Both the Admin API and task BuildKit configuration must be updated together. Do not retain the previous `noProcessSandbox=true` lab configuration. The Admin API image used for validation was built and imported locally; pushing these source commits does not publish a ready-made container image.
+Both the Admin API and task BuildKit configuration must be updated together. Do not retain the previous `noProcessSandbox=true` lab configuration.
+
+Advanced now selects the published Admin API image by digest in
+`oplugins/opsroot.json`. The image is available at
+`ghcr.io/miki3421/openserverless-admin-api`; the validated publication and K3s
+test results are recorded in
+[the publication report](../advanced/validation-adminapi-publication-20261019/REPORT.md).
+The current publication targets `linux/amd64` and can be pulled anonymously.
+The personal Admin API fork builds and publishes relevant `advanced` pushes
+using `.github/workflows/advanced-image.yml`. It tests the builder contracts
+before publishing, uses a tag containing the full source commit, and does not
+create Git tags or releases. Update the catalog digest only after validating a
+new image in the lab.
 
 ## K3s internal registry mirror
 

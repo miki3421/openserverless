@@ -1,0 +1,20 @@
+[
+  {
+    "job": "build-opsvalbeta-4d957e37-be26-4b4d-8b51-50784653baf2",
+    "succeeded": 1,
+    "owner_label": "87ae3cc5575f42acc7e94a59d11796bcf1f07a1515429682ea0e057bb716880",
+    "result_image": "openserverless-registry-svc:5000/opsvalbeta:ops-da88e4745f5ef150431a4ad73cd4a2106e96b7ad3bbf3db1d8dce654434ca481",
+    "hostUsers": false,
+    "automountServiceAccountToken": false,
+    "privileged": false
+  },
+  {
+    "job": "build-opsvalbeta-37e61b7e-924b-4628-b45e-8e49e29f033f",
+    "succeeded": 1,
+    "owner_label": "87ae3cc5575f42acc7e94a59d11796bcf1f07a1515429682ea0e057bb716880",
+    "result_image": "openserverless-registry-svc:5000/opsvalbeta:ops-18ecc1dbe9a8c95652764b9075a656cb62f1fb59c6b6ed42534a019bef296c75",
+    "hostUsers": false,
+    "automountServiceAccountToken": false,
+    "privileged": false
+  }
+]

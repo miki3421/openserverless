@@ -1,0 +1,26 @@
+[
+  {
+    "check": "anonymous_status",
+    "status": 401,
+    "expected": 401,
+    "passed": true
+  },
+  {
+    "check": "peer_status",
+    "status": 404,
+    "expected": 404,
+    "passed": true
+  },
+  {
+    "check": "owner_status",
+    "status": 200,
+    "expected": 200,
+    "passed": true
+  },
+  {
+    "check": "other_tenant_target",
+    "status": 400,
+    "expected": 400,
+    "passed": true
+  }
+]

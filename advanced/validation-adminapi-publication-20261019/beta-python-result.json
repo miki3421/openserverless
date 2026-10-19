@@ -1,0 +1,9 @@
+{
+  "dependency": "humanize",
+  "extension_hook": true,
+  "faker_version": "30.8.2",
+  "pass": true,
+  "resolved": "/usr/local/lib/python3.12/site-packages/humanize/__init__.py",
+  "synthetic_name": "Camilla Asmundo-Leone",
+  "version": "4.13.0"
+}

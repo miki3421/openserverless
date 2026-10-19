@@ -189,6 +189,14 @@ evidence is recorded in
 `advanced/validation-registry-builder-20261017/REPORT.md`. General K3s upgrade
 behavior and multi-node orchestration remain separate work.
 
+On 19 October 2026 the Advanced Admin API was published to the personal GHCR
+registry through a dedicated `advanced` workflow. The task catalog now pins its
+verified manifest digest. Direct K3s registry pull, fresh Python/Node.js builds,
+cache reuse and all 12 Alpha/Beta HTTP regression checks passed with unchanged
+application sources. See
+[publication evidence](advanced/validation-adminapi-publication-20261019/REPORT.md).
+This published image currently targets `linux/amd64`.
+
 Review the automatic image build performed by `ops ide deploy` across the task and admin-api forks:
 - Trace the annotations written and consumed by both components, including missing values, defaults, precedence and backward compatibility.
 - Verify compatibility with the Docker + Kind production topology as a separate test matrix from native K3s + containerd. Production compatibility is a requirement, not authorization to mutate production.

@@ -1,0 +1,10 @@
+{
+  "repository": "ghcr.io/miki3421/openserverless-admin-api",
+  "tag": "advanced-74d0727d4cb25302d123d7de0af33857349a012b",
+  "digest": "sha256:cb8af61e8ab240907879556e04fae9350193966406ab1352ed0efc4174f013df",
+  "image": "ghcr.io/miki3421/openserverless-admin-api@sha256:cb8af61e8ab240907879556e04fae9350193966406ab1352ed0efc4174f013df",
+  "source_commit": "74d0727d4cb25302d123d7de0af33857349a012b",
+  "workflow_run": 39216487572,
+  "anonymous_manifest_verified": true,
+  "platform": "linux/amd64"
+}

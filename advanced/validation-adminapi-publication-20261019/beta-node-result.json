@@ -1,0 +1,7 @@
+{
+  "dependency": "is-number",
+  "pass": true,
+  "resolved": "/opt/ops-deps/node_modules/is-number/index.js",
+  "runtime": "v22.23.2",
+  "version": "7.0.0"
+}
